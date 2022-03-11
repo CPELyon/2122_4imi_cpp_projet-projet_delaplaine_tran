@@ -94,6 +94,14 @@ void noeud::set_voisin(int pos_x,int pos_y,int grid_x,int grid_y)
     }
 }
 
+void noeud::afficher_voisin()
+{
+    for (auto val : liste_voisin)
+    {
+        std::cout<<"("<<val.first<<","<<val.second<<")     ";
+    }
+    std::cout<<std::endl;
+}
 
 
 

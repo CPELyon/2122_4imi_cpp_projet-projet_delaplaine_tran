@@ -24,6 +24,10 @@ struct noeud
 
     noeud(bool p_acces,int p_item);
 
+    void set_voisin(int pos_x,int pos_y,int grid_x,int grid_y);
+
+    void afficher_voisin();
+
 };
 
 std::ostream& operator<<(std::ostream& s, noeud const & n);

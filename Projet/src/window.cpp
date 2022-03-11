@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-window::window(graphe mon_graphe,QWidget *parent)
+window::window(graphe& mon_graphe,QWidget *parent)
     :QMainWindow(parent),ui(new Ui::MainWindow),render(new render_area(mon_graphe)),mon_graphe(mon_graphe)
 {
     std::cout<<"Generate the Window"<<std::endl;

@@ -12,7 +12,7 @@
 
 //#### Fonction concernant render area ####//
 
-render_area::render_area(graphe mon_graphe,QWidget *parent)
+render_area::render_area(graphe& mon_graphe,QWidget *parent)
     :QWidget(parent),pixmap(new QPixmap),grid_state(false),mon_graphe(mon_graphe),
       x_old(0),y_old(0)
 {
@@ -52,15 +52,34 @@ void render_area::paintEvent(QPaintEvent*)
     {
         int dim_x = mon_graphe.dim_x;
         int dim_y = mon_graphe.dim_y;
+
+        int col_ind = x_old / (this->width()/dim_x);
+        int ligne_ind = y_old / (this->height()/dim_y);
+
+        std::cout << ' ' << col_ind << ' ' << ligne_ind << std::endl;
+
         for (int i = 0; i < dim_x; i++)
         {
             for (int j = 0; j < dim_y; j++)
             {
+
                 int coin_sup_x = i*((this->width())/dim_x);
                 int coin_sup_y = j*((this->height())/dim_y);
                 int coin_inf_x = coin_sup_x + (this->width())/dim_x;
                 int coin_inf_y = coin_sup_y + (this->height())/dim_y;
-                painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                // std::cout<<mon_graphe.liste_case[std::make_pair(i,j)].acces<<std::endl;
+
+                if (mon_graphe.liste_case[std::make_pair(i,j)].acces == false)
+                {
+                    brush.setStyle(Qt::SolidPattern);
+                    painter.setBrush(brush);
+                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                }else
+                {
+                    brush.setStyle(Qt::NoBrush);
+                    painter.setBrush(brush);
+                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                }
             }
         }
     }
@@ -79,8 +98,7 @@ void render_area::mousePressEvent(QMouseEvent *event)
     //when a click occurs, we store the current mouse position
     x_old=event->x();
     y_old=event->y();
-    QWidget* val = this->childAt(x_old,y_old);
-    std::cout << "widget : " << val << std::endl;
+    repaint();
 }
 
 void render_area::mouseMoveEvent(QMouseEvent *event)
@@ -89,7 +107,6 @@ void render_area::mouseMoveEvent(QMouseEvent *event)
     int x=event->x();
     int y=event->y();
 
-    //std::cout << this->childAt(x,y);
     //store the previous mouse position
     x_old=x;
     y_old=y;

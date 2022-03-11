@@ -14,9 +14,9 @@ class QPixmap;
 class render_area : public QWidget
 {
     Q_OBJECT
-    graphe mon_graphe;
+    graphe& mon_graphe;
 public:
-    render_area(graphe mon_graphe,QWidget *parent = nullptr);
+    render_area(graphe& mon_graphe,QWidget *parent = nullptr);
     ~render_area();
 
     /** Inverse the state of the draw_grid variable

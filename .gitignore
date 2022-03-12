@@ -34,5 +34,3 @@
 # Specific ignore
 **/build-debug
 CMakeLists.txt.user
-
-

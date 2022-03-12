@@ -21,7 +21,7 @@ class window: public QMainWindow
 
 public:
 
-    window(graphe mon_graphe,QWidget *parent=nullptr);
+    window(graphe& mon_graphe,QWidget *parent=nullptr);
     ~window();
 
 private slots:

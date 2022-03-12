@@ -32,4 +32,5 @@
 *.app
 
 # Specific ignore
-**/builds[*]
+**/build-debug
+CMakeLists.txt.user

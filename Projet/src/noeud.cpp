@@ -10,7 +10,7 @@ noeud::noeud(bool p_acces,int p_item)
 
 std::ostream& operator<<(std::ostream& s, noeud const & n)
 {
-    s<<n.item;
+    s<< "item : "<< n.item << " ; acces : " << n.acces;
     return s;
 }
 

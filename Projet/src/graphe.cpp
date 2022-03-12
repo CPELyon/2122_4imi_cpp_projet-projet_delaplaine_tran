@@ -15,7 +15,7 @@ void graphe::afficher()
         auto coord = val.first;
         int dim_x = std::get<0>(coord);
         int dim_y = std::get<1>(coord);
-        std::cout << "Position (" << dim_x << "," << dim_y << ") | Item : " << val.second << '\n';
+        std::cout << "Position (" << dim_x << "," << dim_y << ") | " << val.second << '\n';
     }
 }
 

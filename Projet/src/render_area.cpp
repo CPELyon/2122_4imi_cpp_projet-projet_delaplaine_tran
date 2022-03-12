@@ -43,8 +43,8 @@ void render_area::paintEvent(QPaintEvent*)
 
     //The brush class is usefull to fill the interior of the shapes
     QBrush brush = painter.brush();
-    brush.setColor(Qt::gray); //color of the interior of the shape
-    brush.setStyle(Qt::NoBrush); //fill the interior
+    // brush.setColor(Qt::white); //color of the interior of the shape
+    brush.setStyle(Qt::SolidPattern); //fill the interior
     painter.setBrush(brush);
 
     //if grid_state is true, then we draw the grid
@@ -56,7 +56,7 @@ void render_area::paintEvent(QPaintEvent*)
         int col_ind = x_old / (this->width()/dim_x);
         int ligne_ind = y_old / (this->height()/dim_y);
 
-        std::cout << ' ' << col_ind << ' ' << ligne_ind << std::endl;
+        // std::cout << ' ' << col_ind << ' ' << ligne_ind << std::endl;
 
         for (int i = 0; i < dim_x; i++)
         {
@@ -71,17 +71,18 @@ void render_area::paintEvent(QPaintEvent*)
 
                 if (mon_graphe.liste_case[std::make_pair(i,j)].acces == false)
                 {
-                    brush.setStyle(Qt::SolidPattern);
+                    brush.setColor(Qt::gray);
                     painter.setBrush(brush);
-                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
                 }else
                 {
-                    brush.setStyle(Qt::NoBrush);
+                    brush.setColor(Qt::white);
                     painter.setBrush(brush);
-                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
                 }
+                painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
             }
         }
+
+
     }
 
 }

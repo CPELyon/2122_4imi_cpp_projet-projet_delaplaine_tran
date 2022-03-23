@@ -28,6 +28,9 @@ private slots:
 
     void action_quit();
     void action_draw();
+    void action_parcours();
+    void action_wall();
+    void action_init();
 
 private:
 

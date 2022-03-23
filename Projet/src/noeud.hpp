@@ -16,9 +16,13 @@ struct noeud
     bool acces;
     // Item contenu sur la case
     //  0 : aucun item présent
-    //  1 : nourriture
+    //  1 : debut
+    //  2 : arrivee
+    //  3 : parcouru par un algo de parcours
     int item;
     std::vector<std::pair<int,int>> liste_voisin;
+    int distance;
+    std::pair<int,int> predecesseur;
 
     noeud();
 

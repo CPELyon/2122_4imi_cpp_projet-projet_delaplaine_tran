@@ -23,6 +23,10 @@ struct graphe
 
     void afficher();
 
+    int get_nb_mur();
+
+    void generate_wall();
+
 };
 
 #endif // GRAPHE_HPP

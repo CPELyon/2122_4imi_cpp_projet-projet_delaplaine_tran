@@ -19,6 +19,9 @@ window::window(graphe& mon_graphe,QWidget *parent)
     //connect signals
     connect(ui->quit,SIGNAL(clicked()),this,SLOT(action_quit()));
     connect(ui->draw,SIGNAL(clicked()),this,SLOT(action_draw()));
+    connect(ui->parcours,SIGNAL(clicked()),this,SLOT(action_parcours()));
+    connect(ui->wall,SIGNAL(clicked()),this,SLOT(action_wall()));
+    connect(ui->init,SIGNAL(clicked()),this,SLOT(action_init()));
 }
 
 
@@ -35,4 +38,19 @@ void window::action_quit()
 void window::action_draw()
 {
     render->change_grid_state();
+}
+
+void window::action_parcours()
+{
+    render->change_parcours_state();
+}
+
+void window::action_wall()
+{
+    render->generate_wall();
+}
+
+void window::action_init()
+{
+    render->define_debut_fin();
 }

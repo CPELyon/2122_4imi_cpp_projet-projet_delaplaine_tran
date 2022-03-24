@@ -23,6 +23,15 @@ public:
         Draw or not the grid */
     void change_grid_state();
 
+    /** Inverse the state of the parcours variable
+        Draw the grid with the parcours*/
+    void change_parcours_state();
+
+    /** Draw the wall on the grid*/
+    void generate_wall();
+
+    void define_debut_fin();
+
 protected:
 	/** The actual painting function */
      void paintEvent(QPaintEvent *event);
@@ -31,12 +40,21 @@ protected:
      /** Function called when the mouse is moved */
      void mouseMoveEvent(QMouseEvent *event);
 
+     /** Function called when we want to make parcours */
+     int parcourslargeur(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar, bool chack, bool refill);
+     /** Function called when we want to make dijkstra parcours */
+     void dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar);
+
+
+
 private:
 
 	/** A QPixmap is an image */
     QPixmap *pixmap;
     /** A boolean indicating the grid should be drawn or not */
     bool grid_state;
+    /** A boolean indicating the parcours should be drawn or not */
+    bool parcours_state;
     /** Storage for the previous position of the mouse */
     int x_old,y_old;
 

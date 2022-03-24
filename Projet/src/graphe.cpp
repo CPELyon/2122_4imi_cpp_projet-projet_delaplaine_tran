@@ -19,3 +19,52 @@ void graphe::afficher()
     }
 }
 
+int graphe::get_nb_mur()
+{
+    int ret = 0;
+    for (auto val : liste_case)
+    {
+        if (!std::get<1>(val).acces)
+        {
+            ret += 1;
+        }
+    }
+    return ret;
+}
+
+void graphe::generate_wall()
+{
+    for (int i = 0; i < dim_x; i++)
+    {
+        for (int j = 0; j < dim_y; j++)
+        {
+            int chance = rand() % 10 + 1;
+            if (chance < 3)
+            {
+                liste_case[std::make_pair(i,j)].acces = false;
+            }
+        }
+    }
+
+//    std::map<std::pair<int,int> , noeud> liste_use = liste_case;
+//    while(!liste_use.empty())
+//    {
+//        auto val = liste_use.begin();
+//        auto coord = val->first;
+
+//        int nb_voisin = 0;
+//        for (auto val : liste_use[coord].liste_voisin)
+//        {
+//            if (liste_use.find(val) == liste_use.end() && liste_use[val].acces) nb_voisin++;
+//        }
+
+//        while (nb_voisin != 0)
+//        {
+//            for (auto val : liste_use[coord].liste_voisin)
+//            {
+
+//            }
+//        }
+//    }
+}
+

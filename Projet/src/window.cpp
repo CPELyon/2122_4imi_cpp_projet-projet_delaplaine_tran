@@ -1,5 +1,4 @@
 #include "window.hpp"
-
 #include "ui_mainwindow.h"
 
 #include <iostream>
@@ -22,6 +21,11 @@ window::window(graphe& mon_graphe,QWidget *parent)
     connect(ui->parcours,SIGNAL(clicked()),this,SLOT(action_parcours()));
     connect(ui->wall,SIGNAL(clicked()),this,SLOT(action_wall()));
     connect(ui->init,SIGNAL(clicked()),this,SLOT(action_init()));
+
+    //configure default option for ui
+    ui->parcours->setVisible(0);
+    ui->init->setVisible(0);
+    ui->wall->setVisible(0);
 }
 
 

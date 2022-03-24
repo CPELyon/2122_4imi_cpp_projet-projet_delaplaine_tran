@@ -45,26 +45,43 @@ void graphe::generate_wall()
             }
         }
     }
-
-//    std::map<std::pair<int,int> , noeud> liste_use = liste_case;
-//    while(!liste_use.empty())
-//    {
-//        auto val = liste_use.begin();
-//        auto coord = val->first;
-
-//        int nb_voisin = 0;
-//        for (auto val : liste_use[coord].liste_voisin)
-//        {
-//            if (liste_use.find(val) == liste_use.end() && liste_use[val].acces) nb_voisin++;
-//        }
-
-//        while (nb_voisin != 0)
-//        {
-//            for (auto val : liste_use[coord].liste_voisin)
-//            {
-
-//            }
-//        }
-//    }
 }
+
+void graphe::reset_parcours()
+{
+    for (auto val : liste_case)
+    {
+        auto coord = std::get<0>(val);
+        if (liste_case[coord].item == 3)
+        {
+            liste_case[coord].item = 0;
+        }
+    }
+}
+
+void graphe::reset_debut()
+{
+    for (auto val : liste_case)
+    {
+        auto coord = std::get<0>(val);
+        if (liste_case[coord].item == 1)
+        {
+            liste_case[coord].item = 0;
+        }
+    }
+}
+
+void graphe::reset_fin()
+{
+    for (auto val : liste_case)
+    {
+        auto coord = std::get<0>(val);
+        if (liste_case[coord].item == 2)
+        {
+            liste_case[coord].item = 0;
+        }
+    }
+}
+
+
 

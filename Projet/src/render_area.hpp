@@ -32,6 +32,9 @@ public:
 
     void define_debut_fin();
 
+    std::pair<int,int> define_debut(int pos_x,int pos_y,bool accept_pos);
+    std::pair<int,int> define_fin(int pos_x,int pos_y,bool accept_pos);
+
 protected:
 	/** The actual painting function */
      void paintEvent(QPaintEvent *event);
@@ -57,6 +60,8 @@ private:
     bool parcours_state;
     /** Storage for the previous position of the mouse */
     int x_old,y_old;
+    /** Storage for the previous position of the mouse */
+    int nb_clic;
 
 
 };

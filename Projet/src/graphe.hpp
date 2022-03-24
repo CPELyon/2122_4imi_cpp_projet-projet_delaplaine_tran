@@ -27,6 +27,10 @@ struct graphe
 
     void generate_wall();
 
+    void reset_parcours();
+    void reset_debut();
+    void reset_fin();
+
 };
 
 #endif // GRAPHE_HPP

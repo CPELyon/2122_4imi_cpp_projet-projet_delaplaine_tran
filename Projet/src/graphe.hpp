@@ -10,12 +10,14 @@
 #include <vector>
 
 #include "noeud.hpp"
+#include "perso.hpp"
 
 struct graphe
 {
     int dim_x;
     int dim_y;
     std::map<std::pair<int,int> , noeud> liste_case;
+    perso Yugo;
 
     graphe();
 
@@ -26,6 +28,8 @@ struct graphe
     int get_nb_mur();
 
     void generate_wall();
+
+    void checknoeud();
 
 };
 

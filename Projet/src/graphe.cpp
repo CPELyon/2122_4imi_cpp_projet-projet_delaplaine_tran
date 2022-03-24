@@ -1,11 +1,11 @@
 #include "graphe.hpp"
 
 graphe::graphe()
-    :dim_x(10),dim_y(10),liste_case()
+    :dim_x(10),dim_y(10),liste_case(),Yugo(perso())
 {}
 
 graphe::graphe(int p_dim_x,int p_dim_y,std::map<std::pair<int,int>,noeud> p_map)
-    :dim_x(p_dim_x),dim_y(p_dim_y),liste_case(p_map)
+    :dim_x(p_dim_x),dim_y(p_dim_y),liste_case(p_map),Yugo(perso())
 {}
 
 void graphe::afficher()
@@ -44,6 +44,11 @@ void graphe::generate_wall()
                 liste_case[std::make_pair(i,j)].acces = false;
             }
         }
+    }
+
+    void graphe::checknoeud()
+    {
+
     }
 
 //    std::map<std::pair<int,int> , noeud> liste_use = liste_case;

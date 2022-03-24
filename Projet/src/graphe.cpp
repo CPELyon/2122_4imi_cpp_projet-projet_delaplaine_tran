@@ -32,6 +32,22 @@ int graphe::get_nb_mur()
     return ret;
 }
 
+void graphe::checknoeud()
+{
+   if (liste_case[Yugo.pos].item==4){
+       Yugo.mangerp();
+   }
+   if (liste_case[Yugo.pos].item==5){
+       Yugo.viem();
+   }
+   if (liste_case[Yugo.pos].item==6){
+       Yugo.viep();
+   }
+   if (liste_case[Yugo.pos].item==7){
+       //changement map
+   }
+}
+
 void graphe::generate_wall()
 {
     for (int i = 0; i < dim_x; i++)
@@ -46,10 +62,7 @@ void graphe::generate_wall()
         }
     }
 
-    void graphe::checknoeud()
-    {
 
-    }
 
 //    std::map<std::pair<int,int> , noeud> liste_use = liste_case;
 //    while(!liste_use.empty())

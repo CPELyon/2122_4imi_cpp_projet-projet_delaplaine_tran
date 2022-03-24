@@ -47,6 +47,7 @@ int boucle(noeud &parcours, std::list<std::pair<int,int>> &queue, std::map<std::
 
 int render_area::parcourslargeur(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar,bool check = true,bool refill = false)
 {
+    g.reset_parcours();
     int ret = 0;
     //Creation coorndonées de départ et d'arrivée.
     std::pair<int,int> debut(x_dep,y_dep);
@@ -105,6 +106,8 @@ std::pair<std::pair<int,int>,noeud> find_min (graphe g,graphe P)
 
 void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
 {
+    g.reset_parcours();
+
     std::map<std::pair<int,int>,noeud> P_liste;
     graphe P = graphe(g.dim_x,g.dim_y,P_liste);
     std::pair<int,int> coord_debut (x_dep,y_dep);
@@ -162,15 +165,22 @@ void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
 
         std::cout<<0<<std::endl;
 
+        // inverser A pour aller du debut a la fin
+        std::reverse(A.begin(),A.end());
+
         // implementation graphique
         for (auto val : A)
         {
             if (g.liste_case[val].item != 1 && g.liste_case[val].item != 2)
             {
+                if (g.liste_case[g.liste_case[val].predecesseur].item == 3)
+                {
+                    g.liste_case[g.liste_case[val].predecesseur].item = 0;
+                }
                 g.liste_case[val].item = 3;
             }
-            //Sleep(100);
-            //repaint();
+            Sleep(250);
+            repaint();
         }
     }else
     {
@@ -316,9 +326,6 @@ void render_area::paintEvent(QPaintEvent*)
         int dim_x = mon_graphe.dim_x;
         int dim_y = mon_graphe.dim_y;
 
-        int col_ind = x_old / (this->width()/dim_x);
-        int ligne_ind = y_old / (this->height()/dim_y);
-
         // std::cout << ' ' << col_ind << ' ' << ligne_ind << std::endl;
 
         for (int i = 0; i < dim_x; i++)
@@ -373,20 +380,33 @@ void render_area::change_grid_state()
 
 void render_area::define_debut_fin()
 {
-    // init des coords du debut et de la fin dans la map
-    int debut_x = rand() % (mon_graphe.dim_x-1);
-    int debut_y = rand() % (mon_graphe.dim_y-1);
-    std::pair<int,int> debut (debut_x,debut_y);
-    int fin_x = rand() % (mon_graphe.dim_x-1);
-    int fin_y = rand() % (mon_graphe.dim_y-1);
-    std::pair<int,int> fin (fin_x,fin_y);
+    std::pair<int,int> debut = define_debut(0,0,false);
+    //std::pair<int,int> fin = define_fin(0,0,false);
 
-//    int debut_x = 0;
-//    int debut_y = 0;
-//    std::pair<int,int> debut (debut_x,debut_y);
-//    int fin_x = mon_graphe.dim_x-1;
-//    int fin_y = mon_graphe.dim_y-1;
-//    std::pair<int,int> fin (fin_x,fin_y);
+    //std::cout<<"Debut : "<<mon_graphe.liste_case[debut].acces<<" | fin : "<<mon_graphe.liste_case[fin].acces<<std::endl;
+    //std::cout<<"Debut : ("<<debut.first<<","<<debut.second<<") | fin : ("<<fin.first<<","<<fin.second<<")"<<std::endl;
+}
+
+std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool accept_pos = false)
+{
+    // reset du debut dans le graphe
+    mon_graphe.reset_debut();
+
+    // init des coords du debut et de la fin dans la map
+    int debut_x;
+    int debut_y;
+    if (!accept_pos)
+    {
+        debut_x = rand() % (mon_graphe.dim_x-1);
+        debut_y = rand() % (mon_graphe.dim_y-1);
+
+    }else
+    {
+        debut_x = pos_x;
+        debut_y = pos_y;
+    }
+
+    std::pair<int,int> debut (debut_x,debut_y);
 
     // config de la case de debut dans la map
     bool check = false;
@@ -402,13 +422,38 @@ void render_area::define_debut_fin()
             else if (std::get<1>(debut) < mon_graphe.dim_y-1){std::get<1>(debut) += 1;}
             else
             {
-                std::get<0>(fin) = 0;
-                std::get<1>(fin) = 0;
+                std::get<0>(debut) = 0;
+                std::get<1>(debut) = 0;
             }
         }
     }
+
+    repaint();
+    return debut;
+}
+
+std::pair<int,int> render_area::define_fin(int pos_x = 0,int pos_y = 0,bool accept_pos = false)
+{
+    // reset de la fin dans le graphe
+    mon_graphe.reset_fin();
+
+    // init des coords du debut et de la fin dans la map
+    int fin_x;
+    int fin_y;
+    if (accept_pos)
+    {
+        fin_x = rand() % (mon_graphe.dim_x-1);
+        fin_y = rand() % (mon_graphe.dim_y-1);
+
+    }else
+    {
+        fin_x = pos_x;
+        fin_y = pos_y;
+    }
+    std::pair<int,int> fin (fin_x,fin_y);
+
     // config de la case de fin dans la map
-    check = false;
+    bool check = false;
     while (!check)
     {
         if (mon_graphe.liste_case[fin].acces && mon_graphe.liste_case[fin].item != 1)
@@ -426,9 +471,8 @@ void render_area::define_debut_fin()
             }
         }
     }
-    std::cout<<"Debut : "<<mon_graphe.liste_case[debut].acces<<" | fin : "<<mon_graphe.liste_case[fin].acces<<std::endl;
-    std::cout<<"Debut : ("<<debut.first<<","<<debut.second<<") | fin : ("<<fin.first<<","<<fin.second<<")"<<std::endl;
     repaint();
+    return fin;
 }
 
 void render_area::change_parcours_state()
@@ -463,7 +507,29 @@ void render_area::mousePressEvent(QMouseEvent *event)
     //when a click occurs, we store the current mouse position
     x_old=event->x();
     y_old=event->y();
-    // repaint();
+
+    int col_ind = x_old / (this->width()/mon_graphe.dim_x);
+    int ligne_ind = y_old / (this->height()/mon_graphe.dim_y);
+
+    std::pair<int,int> coord_fin (col_ind,ligne_ind);
+
+    // recuperation des coord du debut et de fin
+    std::pair<int,int> debut;
+    for (auto val : mon_graphe.liste_case)
+    {
+        auto coord = std::get<0>(val);
+        if (mon_graphe.liste_case[coord].item == 1)
+        {
+            debut = coord;
+        }
+    }
+
+    dijkstra(mon_graphe,debut.first,debut.second,coord_fin.first,coord_fin.second);
+
+    // on redefinit le debut
+    define_debut(coord_fin.first,coord_fin.second,true);
+
+    //repaint();
 }
 
 void render_area::mouseMoveEvent(QMouseEvent *event)

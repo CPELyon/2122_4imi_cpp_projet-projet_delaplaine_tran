@@ -19,6 +19,11 @@ struct noeud
     //  1 : debut
     //  2 : arrivee
     //  3 : parcouru par un algo de parcours
+    //  4 : nourriture
+    //  5 : monstre
+    //  6 : vie
+    //  7 : changement de map
+
     int item;
     std::vector<std::pair<int,int>> liste_voisin;
     int distance;

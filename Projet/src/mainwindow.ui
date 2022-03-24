@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>758</width>
-    <height>475</height>
+    <height>551</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,57 +38,49 @@
     </property>
     <layout class="QVBoxLayout" name="layout_scene"/>
    </widget>
-   <widget class="QPushButton" name="draw">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
       <x>40</x>
       <y>390</y>
-      <width>80</width>
-      <height>24</height>
+      <width>191</width>
+      <height>111</height>
      </rect>
     </property>
-    <property name="text">
-     <string>Draw grid</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="parcours">
-    <property name="geometry">
-     <rect>
-      <x>270</x>
-      <y>390</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Parcours</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="wall">
-    <property name="geometry">
-     <rect>
-      <x>430</x>
-      <y>390</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Wall</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="init">
-    <property name="geometry">
-     <rect>
-      <x>170</x>
-      <y>390</y>
-      <width>80</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Init</string>
-    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="draw">
+       <property name="text">
+        <string>Draw grid</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="wall">
+         <property name="text">
+          <string>Wall</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="init">
+         <property name="text">
+          <string>Init</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="parcours">
+         <property name="text">
+          <string>Parcours</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -104,5 +96,54 @@
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>draw</sender>
+   <signal>clicked()</signal>
+   <receiver>wall</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>431</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>wall</sender>
+   <signal>clicked()</signal>
+   <receiver>init</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>207</x>
+     <y>430</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>204</x>
+     <y>460</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>init</sender>
+   <signal>clicked()</signal>
+   <receiver>parcours</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>163</x>
+     <y>467</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>171</x>
+     <y>501</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

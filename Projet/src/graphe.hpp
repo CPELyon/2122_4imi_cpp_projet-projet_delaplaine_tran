@@ -29,7 +29,12 @@ struct graphe
 
     void generate_wall();
 
+
     void checknoeud();
+    void reset_parcours();
+    void reset_debut();
+    void reset_fin();
+
 
 };
 

@@ -14,6 +14,10 @@ struct perso
     int miam;
     // Nourriture de notre personnage entre 0 et 100
     std::pair<int,int> pos;
+    // Score
+    int score;
+    // Variable de fin
+    bool fin = false;
 
     perso();
     perso(std::pair<int,int> spawn);
@@ -22,7 +26,7 @@ struct perso
     void mangerm();
     void viep();
     void viem();
-    void deplacer(std::pair<int,int> &pos,std::pair<int,int> &arrivee);
+    void deplacer(std::pair<int,int> arrivee);
 
 };
 

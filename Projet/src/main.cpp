@@ -24,6 +24,8 @@ int main(int argc,char *argv[])
 
     graphe mon_graphe = graphe(dim_x,dim_y,liste_case);
 
+    perso Yugo = perso();
+
     // mon_graphe.afficher();
 
     //#### Gestion graphique ####//

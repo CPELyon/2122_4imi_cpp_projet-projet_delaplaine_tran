@@ -5,7 +5,7 @@
 
 
 window::window(graphe& mon_graphe,QWidget *parent)
-    :QMainWindow(parent),ui(new Ui::MainWindow),render(new render_area(mon_graphe)),mon_graphe(mon_graphe)
+    :QMainWindow(parent),ui(new Ui::MainWindow),render(new render_area(mon_graphe,ui)),mon_graphe(mon_graphe)
 {
     std::cout<<"Generate the Window"<<std::endl;
 
@@ -17,15 +17,13 @@ window::window(graphe& mon_graphe,QWidget *parent)
 
     //connect signals
     connect(ui->quit,SIGNAL(clicked()),this,SLOT(action_quit()));
-    connect(ui->draw,SIGNAL(clicked()),this,SLOT(action_draw()));
-    connect(ui->parcours,SIGNAL(clicked()),this,SLOT(action_parcours()));
-    connect(ui->wall,SIGNAL(clicked()),this,SLOT(action_wall()));
-    connect(ui->init,SIGNAL(clicked()),this,SLOT(action_init()));
+    connect(ui->Lancer,SIGNAL(clicked()),this,SLOT(action_lancer()));
 
     //configure default option for ui
-    ui->parcours->setVisible(0);
-    ui->init->setVisible(0);
-    ui->wall->setVisible(0);
+    ui->miam->setVisible(0);
+    ui->vie->setVisible(0);
+    ui->label->setVisible(0);
+    ui->label_2->setVisible(0);
 }
 
 
@@ -39,22 +37,7 @@ void window::action_quit()
     close();
 }
 
-void window::action_draw()
+void window::action_lancer()
 {
-    render->change_grid_state();
-}
-
-void window::action_parcours()
-{
-    render->change_parcours_state();
-}
-
-void window::action_wall()
-{
-    render->generate_wall();
-}
-
-void window::action_init()
-{
-    render->define_debut_fin();
+    render->game_start(0,0,false);
 }

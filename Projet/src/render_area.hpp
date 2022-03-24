@@ -4,7 +4,7 @@
 #define RENDER_AREA_HPP
 
 #include <QWidget>
-
+#include "ui_mainwindow.h"
 #include "graphe.hpp"
 
 //Forward declaration of QPixmap
@@ -15,8 +15,10 @@ class render_area : public QWidget
 {
     Q_OBJECT
     graphe& mon_graphe;
+    Ui::MainWindow *ui;
+
 public:
-    render_area(graphe& mon_graphe,QWidget *parent = nullptr);
+    render_area(graphe& mon_graphe,Ui::MainWindow *ui,QWidget *parent = nullptr);
     ~render_area();
 
     /** Inverse the state of the draw_grid variable
@@ -30,10 +32,16 @@ public:
     /** Draw the wall on the grid*/
     void generate_wall();
 
-    void define_debut_fin();
+    /** Draw the item on the grid*/
+    void generate_item();
+
+    void generate_tp();
 
     std::pair<int,int> define_debut(int pos_x,int pos_y,bool accept_pos);
     std::pair<int,int> define_fin(int pos_x,int pos_y,bool accept_pos);
+
+    void game_start(int pos_x, int pos_y,bool restart);
+    void check_fin();
 
 protected:
 	/** The actual painting function */
@@ -46,7 +54,7 @@ protected:
      /** Function called when we want to make parcours */
      int parcourslargeur(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar, bool chack, bool refill);
      /** Function called when we want to make dijkstra parcours */
-     void dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar);
+     int dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar);
 
 
 
@@ -60,8 +68,7 @@ private:
     bool parcours_state;
     /** Storage for the previous position of the mouse */
     int x_old,y_old;
-    /** Storage for the previous position of the mouse */
-    int nb_clic;
+
 
 
 };

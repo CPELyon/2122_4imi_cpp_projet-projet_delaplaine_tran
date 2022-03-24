@@ -30,10 +30,12 @@ struct graphe
     void generate_wall();
 
 
-    void checknoeud();
+    int checknoeud();
     void reset_parcours();
     void reset_debut();
     void reset_fin();
+
+    void reset_map();
 
 
 };

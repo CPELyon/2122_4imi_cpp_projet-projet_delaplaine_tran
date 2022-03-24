@@ -38,47 +38,78 @@
     </property>
     <layout class="QVBoxLayout" name="layout_scene"/>
    </widget>
+   <widget class="QPushButton" name="Lancer">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>380</y>
+      <width>80</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>390</y>
-      <width>191</width>
-      <height>111</height>
+      <x>20</x>
+      <y>420</y>
+      <width>241</width>
+      <height>56</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Vie</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QProgressBar" name="vie">
+       <property name="value">
+        <number>24</number>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Nourriture</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QProgressBar" name="miam">
+       <property name="value">
+        <number>24</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>440</y>
+      <width>101</width>
+      <height>25</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QPushButton" name="draw">
+      <widget class="QLabel" name="score_label">
        <property name="text">
-        <string>Draw grid</string>
+        <string>Score</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QPushButton" name="wall">
-         <property name="text">
-          <string>Wall</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="init">
-         <property name="text">
-          <string>Init</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="parcours">
-         <property name="text">
-          <string>Parcours</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLCDNumber" name="score"/>
      </item>
     </layout>
    </widget>
@@ -98,50 +129,66 @@
  <resources/>
  <connections>
   <connection>
-   <sender>draw</sender>
+   <sender>Lancer</sender>
    <signal>clicked()</signal>
-   <receiver>wall</receiver>
+   <receiver>label</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>106</x>
-     <y>467</y>
+     <x>78</x>
+     <y>403</y>
     </hint>
     <hint type="destinationlabel">
-     <x>156</x>
-     <y>431</y>
+     <x>34</x>
+     <y>450</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>wall</sender>
+   <sender>Lancer</sender>
    <signal>clicked()</signal>
-   <receiver>init</receiver>
+   <receiver>vie</receiver>
    <slot>show()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>430</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>204</x>
-     <y>460</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>init</sender>
-   <signal>clicked()</signal>
-   <receiver>parcours</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>163</x>
-     <y>467</y>
+     <x>104</x>
+     <y>408</y>
     </hint>
     <hint type="destinationlabel">
      <x>171</x>
-     <y>501</y>
+     <y>448</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Lancer</sender>
+   <signal>clicked()</signal>
+   <receiver>label_2</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>41</x>
+     <y>409</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>33</x>
+     <y>484</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>Lancer</sender>
+   <signal>clicked()</signal>
+   <receiver>miam</receiver>
+   <slot>show()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>53</x>
+     <y>415</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>154</x>
+     <y>484</y>
     </hint>
    </hints>
   </connection>

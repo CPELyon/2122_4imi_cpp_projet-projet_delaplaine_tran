@@ -10,25 +10,51 @@ perso::perso(std::pair<int,int> spawn)
 
 void perso::mangerp()
 {
-    miam+=10;
+    if (miam+20 > 100)
+    {
+        miam=100;
+    }else
+    {
+        miam+=20;
+    }
 }
 
 void perso::mangerm()
 {
-    miam-=10;
+    if (miam-1 < 0)
+    {
+        miam=0;
+    }else
+    {
+        miam-=1;
+    }
+
 }
 
 void perso::viep()
 {
-    vie-=10;
+    if (vie+10 > 100)
+    {
+        vie=100;
+    }else
+    {
+        vie+=10;
+    }
 }
 
 void perso::viem()
 {
-    vie-=10;
+    if (vie-30 < 0)
+    {
+        vie=0;
+    }else
+    {
+        vie-=30;
+    }
+
 }
 
- void perso::deplacer(std::pair<int,int> &pos,std::pair<int,int> &arrivee)
+ void perso::deplacer(std::pair<int,int> arrivee)
  {
    pos = arrivee;
  }

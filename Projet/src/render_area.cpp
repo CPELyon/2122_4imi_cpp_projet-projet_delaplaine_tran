@@ -4,6 +4,7 @@
 #include <iostream>
 #include <windows.h>
 #include <cstdlib>
+#include <cmath>
 
 #include <QPixmap>
 #include <QPainter>
@@ -38,8 +39,6 @@ int boucle(noeud &parcours, std::list<std::pair<int,int>> &queue, std::map<std::
                 g.liste_case[coord_voisin].acces = false;
             }
         }
-
-
     }
 }
 
@@ -104,7 +103,7 @@ std::pair<std::pair<int,int>,noeud> find_min (graphe g,graphe P)
     return ret;
 }
 
-void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
+int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
 {
     g.reset_parcours();
 
@@ -147,8 +146,6 @@ void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
             }
         }
     }
-    std::cout<<"nb case : "<<g.liste_case.size()-g.get_nb_mur()<<std::endl;
-    std::cout<<"compteur : "<<compteur<<" | p size : "<<P.liste_case.size()<<std::endl;
 
     // Si on a trouver un chemin alors on le trace
     if (compteur <= g.liste_case.size()-g.get_nb_mur())
@@ -163,8 +160,6 @@ void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
         }
         A.push_back(std::make_pair(std::get<0>(coord_debut),std::get<1>(coord_debut)));
 
-        std::cout<<0<<std::endl;
-
         // inverser A pour aller du debut a la fin
         std::reverse(A.begin(),A.end());
 
@@ -177,7 +172,24 @@ void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                 {
                     g.liste_case[g.liste_case[val].predecesseur].item = 0;
                 }
+                g.Yugo.deplacer(val);
+                int cgt_map = g.checknoeud();
+                ui->miam->setValue(g.Yugo.miam);
+                ui->vie->setValue(g.Yugo.vie);
+                ui->score->display(g.Yugo.score);
+                check_fin();
+                if (g.Yugo.fin)
+                {
+                    repaint();
+                    return 1;
+                }
+
+                //std::cout<<"Vie : "<<g.Yugo.vie<<" | Faim : "<<g.Yugo.miam<<std::endl;
                 g.liste_case[val].item = 3;
+                if (cgt_map == 1)
+                {
+                    game_start(g.Yugo.pos.first,g.Yugo.pos.second,true);
+                }
             }
             Sleep(250);
             repaint();
@@ -186,6 +198,7 @@ void render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
     {
         std::cout<<"Aucun chemin trouve"<<std::endl;
     }
+    return 0;
 }
 
 void render_area::generate_wall()
@@ -197,8 +210,8 @@ void render_area::generate_wall()
     {
         for (int j = 0; j < mon_graphe.dim_y; j++)
         {
-            int chance = rand() % 10 + 1;
-            if (chance < 4)
+            int chance = rand() % 100 + 1;
+            if (chance < 25)
             {
                 mon_graphe.liste_case[std::make_pair(i,j)].acces = false;
             }
@@ -281,11 +294,39 @@ void render_area::generate_wall()
             mon_graphe.liste_case[coord].acces = false; // on le ft manuellement pour le premier element
         }
     }
-    repaint();
+    // repaint();
 }
 
-render_area::render_area(graphe& mon_graphe,QWidget *parent)
-    :QWidget(parent),pixmap(new QPixmap),grid_state(false),mon_graphe(mon_graphe),
+void render_area::generate_item()
+{
+    // #### initialisation de item random
+
+    for (int i = 0; i < mon_graphe.dim_x; i++)
+    {
+        for (int j = 0; j < mon_graphe.dim_y; j++)
+        {
+            int chance_miam = rand() % 100 + 1;
+            int chance_vie = rand() % 100 + 1;
+            int chance_monstre = rand() % 100 + 1;
+            if (chance_miam < 12)
+            {
+                mon_graphe.liste_case[std::make_pair(i,j)].item = 4;
+            }
+            if (chance_vie < 5)
+            {
+                mon_graphe.liste_case[std::make_pair(i,j)].item = 6;
+            }
+            if (chance_monstre < 5)
+            {
+                mon_graphe.liste_case[std::make_pair(i,j)].item = 5;
+            }
+        }
+    }
+    //repaint();
+}
+
+render_area::render_area(graphe& mon_graphe,Ui::MainWindow *ui,QWidget *parent)
+    :QWidget(parent),pixmap(new QPixmap),grid_state(false),mon_graphe(mon_graphe),ui(ui),
       x_old(0),y_old(0)
 {
     setBackgroundRole(QPalette::Base);
@@ -322,7 +363,6 @@ void render_area::paintEvent(QPaintEvent*)
     //if grid_state is true, then we draw the grid
     if(grid_state)
     {
-
         int dim_x = mon_graphe.dim_x;
         int dim_y = mon_graphe.dim_y;
 
@@ -341,21 +381,27 @@ void render_area::paintEvent(QPaintEvent*)
 
                 if (mon_graphe.liste_case[std::make_pair(i,j)].acces == false)
                 {
-                    brush.setColor(Qt::black);
-                    painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 1)
-                {
-                    QColor color(251, 35, 17);
+                    QColor color(100, 100, 100);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 2)
+                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 4)
                 {
-                    QColor color(104, 171, 242);
+                    QColor color(119, 200, 42);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 3)
+                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 5)
                 {
-                    QColor color(116, 126, 136);
+                    QColor color(255, 158, 27);
+                    brush.setColor(color);
+                    painter.setBrush(brush);
+                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 6) //vie
+                {
+                    QColor color(255, 0, 0);
+                    brush.setColor(color);
+                    painter.setBrush(brush);
+                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 7) //tp
+                {
+                    QColor color(165, 10, 196);
                     brush.setColor(color);
                     painter.setBrush(brush);
                 }else
@@ -364,28 +410,39 @@ void render_area::paintEvent(QPaintEvent*)
                     painter.setBrush(brush);
                 }
                 painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+
+                if (mon_graphe.Yugo.pos.first == i && mon_graphe.Yugo.pos.second == j)
+                {
+                    QColor color(72, 122, 255);
+                    brush.setColor(color);
+                    painter.setBrush(brush);
+                    painter.drawEllipse(coin_sup_x,coin_sup_y,coin_inf_x-coin_sup_x,coin_inf_y-coin_sup_y);
+
+//                    painter.drawImage(QRect(coin_sup_x, coin_sup_y, coin_inf_x, coin_inf_y), QImage(QString("%1/src/character.png").arg(QCoreApplication::applicationDirPath())));
+//                    painter.drawImage(20,20, QImage(QString("%1/src/character.png").arg(QCoreApplication::applicationDirPath())));
+
+                }
             }
         }
     }
 
+    if (mon_graphe.Yugo.fin)
+    {
+        painter.eraseRect(0,0,mon_graphe.dim_x,mon_graphe.dim_y);
+        std::cout<<"game over draw"<<std::endl;
+        QString string = tr("Game Over");
+        painter.setFont(QFont("Times", 80, QFont::Bold));
+        painter.drawText(50,200,string);
+    }
 }
 
 
 void render_area::change_grid_state()
 {
     grid_state=!grid_state;
-    repaint();
+    //repaint();
 }
 
-
-void render_area::define_debut_fin()
-{
-    std::pair<int,int> debut = define_debut(0,0,false);
-    //std::pair<int,int> fin = define_fin(0,0,false);
-
-    //std::cout<<"Debut : "<<mon_graphe.liste_case[debut].acces<<" | fin : "<<mon_graphe.liste_case[fin].acces<<std::endl;
-    //std::cout<<"Debut : ("<<debut.first<<","<<debut.second<<") | fin : ("<<fin.first<<","<<fin.second<<")"<<std::endl;
-}
 
 std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool accept_pos = false)
 {
@@ -428,7 +485,7 @@ std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool ac
         }
     }
 
-    repaint();
+    //repaint();
     return debut;
 }
 
@@ -471,7 +528,7 @@ std::pair<int,int> render_area::define_fin(int pos_x = 0,int pos_y = 0,bool acce
             }
         }
     }
-    repaint();
+    //repaint();
     return fin;
 }
 
@@ -493,13 +550,7 @@ void render_area::change_parcours_state()
     }
 
     // Appel des algo de parcours
-
-    //int cpt = parcourslargeur(mon_graphe,std::get<0>(debut),std::get<1>(debut),std::get<0>(fin),std::get<1>(fin));
     dijkstra(mon_graphe,debut.first,debut.second,fin.first,fin.second);
-    //dijkstra(mon_graphe,0,0,mon_graphe.dim_x-1,mon_graphe.dim_y-1);
-    //parcourslargeur(mon_graphe,0,0,mon_graphe.dim_x-1,mon_graphe.dim_y-1);
-    repaint();
-
 }
 
 void render_area::mousePressEvent(QMouseEvent *event)
@@ -524,11 +575,15 @@ void render_area::mousePressEvent(QMouseEvent *event)
         }
     }
 
-    dijkstra(mon_graphe,debut.first,debut.second,coord_fin.first,coord_fin.second);
+    int fin = dijkstra(mon_graphe,mon_graphe.Yugo.pos.first,mon_graphe.Yugo.pos.second,coord_fin.first,coord_fin.second);
 
-    // on redefinit le debut
-    define_debut(coord_fin.first,coord_fin.second,true);
+    // on redefinit la position de Yugo
+    mon_graphe.Yugo.deplacer(std::make_pair(col_ind,ligne_ind));
 
+    if (fin ==1)
+    {
+        std::cout<<"fin"<<std::endl;
+    }
     //repaint();
 }
 
@@ -543,4 +598,144 @@ void render_area::mouseMoveEvent(QMouseEvent *event)
     y_old=y;
 
     // repaint();
+}
+
+void render_area::generate_tp()
+{
+    int coord_x = 0;
+    int coord_y = floor((mon_graphe.dim_y-1)/2);
+    std::pair<int,int> position(coord_x,coord_y);
+
+    // config de la case de fin dans la map
+    bool check = false;
+    while (!check)
+    {
+        if (mon_graphe.liste_case[position].acces)
+        {
+            mon_graphe.liste_case[position].item = 7;
+            check = true;
+        }else
+        {
+            if (std::get<0>(position) < mon_graphe.dim_x-1){std::get<0>(position) += 1;}
+            else if (std::get<1>(position) < mon_graphe.dim_y-1){std::get<1>(position) += 1;}
+            else
+            {
+                std::get<0>(position) = 0;
+                std::get<1>(position) = 0;
+            }
+        }
+    }
+
+    coord_x = floor((mon_graphe.dim_x-1)/2);
+    coord_y = 0;
+    std::get<0>(position) = coord_x;
+    std::get<1>(position) = coord_y;
+
+    // config de la case de fin dans la map
+    check = false;
+    while (!check)
+    {
+        if (mon_graphe.liste_case[position].acces)
+        {
+            mon_graphe.liste_case[position].item = 7;
+            check = true;
+        }else
+        {
+            if (std::get<0>(position) < mon_graphe.dim_x-1){std::get<0>(position) += 1;}
+            else if (std::get<1>(position) < mon_graphe.dim_y-1){std::get<1>(position) += 1;}
+            else
+            {
+                std::get<0>(position) = 0;
+                std::get<1>(position) = 0;
+            }
+        }
+    }
+
+    coord_x = mon_graphe.dim_x-1;
+    coord_y = floor((mon_graphe.dim_y-1)/2);
+    std::get<0>(position) = coord_x;
+    std::get<1>(position) = coord_y;
+
+    // config de la case de fin dans la map
+    check = false;
+    while (!check)
+    {
+        if (mon_graphe.liste_case[position].acces)
+        {
+            mon_graphe.liste_case[position].item = 7;
+            check = true;
+        }else
+        {
+            if (std::get<0>(position) < mon_graphe.dim_x-1){std::get<0>(position) += 1;}
+            else if (std::get<1>(position) < mon_graphe.dim_y-1){std::get<1>(position) += 1;}
+            else
+            {
+                std::get<0>(position) = 0;
+                std::get<1>(position) = 0;
+            }
+        }
+    }
+
+    coord_x = floor((mon_graphe.dim_x-1)/2);
+    coord_y = mon_graphe.dim_y-1;
+    std::get<0>(position) = coord_x;
+    std::get<1>(position) = coord_y;
+
+    // config de la case de fin dans la map
+    check = false;
+    while (!check)
+    {
+        if (mon_graphe.liste_case[position].acces)
+        {
+            mon_graphe.liste_case[position].item = 7;
+            check = true;
+        }else
+        {
+            if (std::get<0>(position) < mon_graphe.dim_x-1){std::get<0>(position) += 1;}
+            else if (std::get<1>(position) < mon_graphe.dim_y-1){std::get<1>(position) += 1;}
+            else
+            {
+                std::get<0>(position) = 0;
+                std::get<1>(position) = 0;
+            }
+        }
+    }
+}
+
+void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false)
+{
+    if (!restart)
+    {
+        change_grid_state();
+        ui->miam->setValue(100);
+        ui->vie->setValue(100);
+    }
+    generate_wall();
+    generate_item();
+    generate_tp();
+    define_debut(pos_x,pos_y,restart);
+
+    // recuperation des coord du debut et de fin
+    std::pair<int,int> debut;
+    for (auto val : mon_graphe.liste_case)
+    {
+        auto coord = std::get<0>(val);
+        if (mon_graphe.liste_case[coord].item == 1)
+        {
+            debut = coord;
+        }
+    }
+
+    mon_graphe.Yugo.deplacer(debut);
+
+    repaint();
+}
+
+void render_area::check_fin()
+{
+    if (mon_graphe.Yugo.miam <= 0 || mon_graphe.Yugo.vie <= 0)
+    {
+        mon_graphe.Yugo.fin = true;
+        change_grid_state();
+    }
 }

@@ -32,20 +32,31 @@ int graphe::get_nb_mur()
     return ret;
 }
 
-void graphe::checknoeud()
+int graphe::checknoeud()
 {
+    Yugo.score += 10;
+    Yugo.mangerm();
+    int rep = 0;
    if (liste_case[Yugo.pos].item==4){
        Yugo.mangerp();
+       std::cout<<"manger plus"<<std::endl;
    }
    if (liste_case[Yugo.pos].item==5){
        Yugo.viem();
+       Yugo.score += 50;
+       std::cout<<"vie moins"<<std::endl;
    }
    if (liste_case[Yugo.pos].item==6){
        Yugo.viep();
+       std::cout<<"vie plus"<<std::endl;
    }
    if (liste_case[Yugo.pos].item==7){
        //changement map
+       reset_map();
+       rep = 1;
+       Yugo.score += 20;
    }
+   return rep;
 }
 
 void graphe::generate_wall()
@@ -99,5 +110,13 @@ void graphe::reset_fin()
     }
 }
 
-
+void graphe::reset_map()
+{
+    for (auto val : liste_case)
+    {
+        auto coord = std::get<0>(val);
+        liste_case[coord].acces = true;
+        liste_case[coord].item = 0;
+    }
+}
 

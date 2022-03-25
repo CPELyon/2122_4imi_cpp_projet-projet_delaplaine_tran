@@ -26,6 +26,8 @@ int main(int argc,char *argv[])
 
     perso Yugo = perso();
 
+    mon_graphe.Yugo = Yugo;
+
     // mon_graphe.afficher();
 
     //#### Gestion graphique ####//

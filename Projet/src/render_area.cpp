@@ -2,13 +2,19 @@
 #include "render_area.hpp"
 
 #include <iostream>
-#include <windows.h>
+
 #include <cstdlib>
 #include <cmath>
 
 #include <QPixmap>
 #include <QPainter>
 #include <QMouseEvent>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <unistd.h>
+#endif
 
 //#### Fonction libre ####//
 int boucle(noeud &parcours, std::list<std::pair<int,int>> &queue, std::map<std::pair<int,int>,bool> &visite,graphe &g,std::pair<int,int> &arrivee,int & ret,bool check,bool refill){
@@ -177,6 +183,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                 ui->miam->setValue(g.Yugo.miam);
                 ui->vie->setValue(g.Yugo.vie);
                 ui->score->display(g.Yugo.score);
+                std::cout<<"Score :"<<g.Yugo.score<<std::endl;
                 check_fin();
                 if (g.Yugo.fin)
                 {
@@ -191,7 +198,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                     game_start(g.Yugo.pos.first,g.Yugo.pos.second,true);
                 }
             }
-            Sleep(250);
+            usleep(100000);
             repaint();
         }
     }else

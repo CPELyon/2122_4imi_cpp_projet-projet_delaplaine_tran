@@ -54,9 +54,12 @@ void perso::viem()
 
 }
 
- void perso::deplacer(std::pair<int,int> arrivee)
+ std::pair<int,int>& perso::deplacer(std::pair<int,int> arrivee)
  {
-   pos = arrivee;
+   return pos = arrivee;
  }
 
-
+ std::pair<int,int> perso::deplacer(std::pair<int,int> arrivee) const
+ {
+   return pos;
+ }

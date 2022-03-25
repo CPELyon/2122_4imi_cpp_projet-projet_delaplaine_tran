@@ -26,7 +26,8 @@ struct perso
     void mangerm();
     void viep();
     void viem();
-    void deplacer(std::pair<int,int> arrivee);
+    std::pair<int,int>& deplacer(std::pair<int,int> arrivee);
+    std::pair<int,int> deplacer(std::pair<int,int> arrivee) const;
 
 };
 

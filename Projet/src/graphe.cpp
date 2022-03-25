@@ -37,26 +37,26 @@ int graphe::checknoeud()
     Yugo.score += 10;
     Yugo.mangerm();
     int rep = 0;
-   if (liste_case[Yugo.pos].item==4){
+    if (liste_case[Yugo.pos].item==4){
        Yugo.mangerp();
-       std::cout<<"manger plus"<<std::endl;
-   }
-   if (liste_case[Yugo.pos].item==5){
+       //std::cout<<"manger plus"<<std::endl;
+    }
+    if (liste_case[Yugo.pos].item==5){
        Yugo.viem();
        Yugo.score += 50;
-       std::cout<<"vie moins"<<std::endl;
-   }
-   if (liste_case[Yugo.pos].item==6){
+       //std::cout<<"vie moins"<<std::endl;
+    }
+    if (liste_case[Yugo.pos].item==6){
        Yugo.viep();
-       std::cout<<"vie plus"<<std::endl;
-   }
-   if (liste_case[Yugo.pos].item==7){
+       //std::cout<<"vie plus"<<std::endl;
+    }
+    if (liste_case[Yugo.pos].item==7){
        //changement map
        reset_map();
        rep = 1;
        Yugo.score += 20;
-   }
-   return rep;
+    }
+    return rep;
 }
 
 void graphe::generate_wall()

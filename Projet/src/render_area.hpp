@@ -48,8 +48,6 @@ protected:
      void paintEvent(QPaintEvent *event);
      /** Function called when the mouse is pressed */
      void mousePressEvent(QMouseEvent *event);
-     /** Function called when the mouse is moved */
-     void mouseMoveEvent(QMouseEvent *event);
 
      /** Function called when we want to make parcours */
      int parcourslargeur(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar, bool chack, bool refill);

@@ -9,6 +9,8 @@
 #include <QPixmap>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QDebug>
+#include <QImageReader>
 
 
 #ifdef _WIN32
@@ -105,11 +107,10 @@ void render_area::paintEvent(QPaintEvent*)
 
     //The brush class is usefull to fill the interior of the shapes
     QBrush brush = painter.brush();
-    // brush.setColor(Qt::white); //color of the interior of the shape
     brush.setStyle(Qt::SolidPattern); //fill the interior
     painter.setBrush(brush);
 
-    //if grid_state is true, then we draw the grid
+
     if (mon_graphe.Yugo->fin)
     {
         painter.eraseRect(0,0,mon_graphe.dim_x,mon_graphe.dim_y);
@@ -117,12 +118,11 @@ void render_area::paintEvent(QPaintEvent*)
         painter.setFont(QFont("Times", 80, QFont::Bold));
         painter.drawText(50,200,string);
     }
+    //if grid_state is true, then we draw the grid
     else if(grid_state)
     {
         int dim_x = mon_graphe.dim_x;
         int dim_y = mon_graphe.dim_y;
-
-        // std::cout << ' ' << col_ind << ' ' << ligne_ind << std::endl;
 
         for (int i = 0; i < dim_x; i++)
         {
@@ -135,47 +135,101 @@ void render_area::paintEvent(QPaintEvent*)
                 int coin_inf_y = coin_sup_y + (this->height())/dim_y;
                 // std::cout<<mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces<<std::endl;
 
-                if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces == false)
+
+                if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 4) //food
                 {
-                    QColor color(100, 100, 100);
-                    brush.setColor(color);
-                    painter.setBrush(brush);
-                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 4)
+                    QString chemin = QString("%1/../src/food.png").arg(QCoreApplication::applicationDirPath());
+                    QImageReader reader;
+                    reader.setFileName(chemin);
+                    QImage image_food = reader.read();
+                    if (image_food.isNull())
+                    {
+                        QColor color(119, 200, 42);
+                        brush.setColor(color);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                    }else
+                    {
+                        brush.setColor(Qt::white);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*1/10, coin_sup_y+(coin_inf_y-coin_sup_y)*1/10, image_food.scaled((coin_inf_x-coin_sup_x)*8/10,(coin_inf_y-coin_sup_y)*8/10));
+                    }
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 5 ) //monstre
                 {
-                    QColor color(119, 200, 42);
-                    brush.setColor(color);
-                    painter.setBrush(brush);
-                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 5)
+                    QString chemin = QString("%1/../src/monstre.png").arg(QCoreApplication::applicationDirPath());
+                    QImageReader reader;
+                    reader.setFileName(chemin);
+                    QImage image_monstre = reader.read();
+                    if (image_monstre.isNull())
+                    {
+                        QColor color(255, 158, 27);
+                        brush.setColor(color);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                    }else
+                    {
+                        brush.setColor(Qt::white);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*2/10, coin_sup_y+2, image_monstre.scaled((coin_inf_x-coin_sup_x)*6/10,(coin_inf_y-coin_sup_y)*9/10));
+                    }
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 6) //vie
                 {
-                    QColor color(255, 158, 27);
-                    brush.setColor(color);
-                    painter.setBrush(brush);
-                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 6) //vie
-                {
-                    QColor color(255, 0, 0);
-                    brush.setColor(color);
-                    painter.setBrush(brush);
-                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 7) //tp
+                    QString chemin = QString("%1/../src/heart.png").arg(QCoreApplication::applicationDirPath());
+                    QImageReader reader;
+                    reader.setFileName(chemin);
+                    QImage image_vie = reader.read();
+                    if (image_vie.isNull())
+                    {
+                        QColor color(255, 0, 0);
+                        brush.setColor(color);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                    }else
+                    {
+                        brush.setColor(Qt::white);
+                        painter.setBrush(brush);
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*2/10, coin_sup_y+2, image_vie.scaled((coin_inf_x-coin_sup_x)*6/10,(coin_inf_y-coin_sup_y)*9/10));
+                    }
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 7) //tp
                 {
                     QColor color(165, 10, 196);
                     brush.setColor(color);
                     painter.setBrush(brush);
+                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces == false)
+                {
+                    QColor color(100, 100, 100);
+                    brush.setColor(color);
+                    painter.setBrush(brush);
+                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
                 }else
                 {
                     brush.setColor(Qt::white);
                     painter.setBrush(brush);
+                    painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
                 }
-                painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
 
                 if (mon_graphe.Yugo->getsetpos().first == i && mon_graphe.Yugo->getsetpos().second == j)
                 {
-                    QColor color(72, 122, 255);
-                    brush.setColor(color);
-                    painter.setBrush(brush);
-                    painter.drawEllipse(coin_sup_x,coin_sup_y,coin_inf_x-coin_sup_x,coin_inf_y-coin_sup_y);
+                    QString chemin = QString("%1/../src/character.png").arg(QCoreApplication::applicationDirPath());
+                    QImageReader reader;
+                    reader.setFileName(chemin);
+                    QImage image = reader.read();
+                    if (image.isNull())
+                    {
+                        painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
+                        QColor color(72, 122, 255);
+                        brush.setColor(color);
+                        painter.setBrush(brush);
+                        painter.drawEllipse(coin_sup_x,coin_sup_y,coin_inf_x-coin_sup_x,coin_inf_y-coin_sup_y);
+                    }else
+                    {
+                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*2/10, coin_sup_y+2, image.scaled((coin_inf_x-coin_sup_x)*6/10,(coin_inf_y-coin_sup_y)*9/10));
 
-//                    painter.drawImage(QRect(coin_sup_x, coin_sup_y, coin_inf_x, coin_inf_y), QImage(QString("%1/src/character.png").arg(QCoreApplication::applicationDirPath())));
-//                    painter.drawImage(20,20, QImage(QString("%1/src/character.png").arg(QCoreApplication::applicationDirPath())));
+                    }
 
                 }
             }
@@ -446,15 +500,15 @@ void render_area::generate_item()
             int chance_miam = rand() % 100 + 1;
             int chance_vie = rand() % 100 + 1;
             int chance_monstre = rand() % 100 + 1;
-            if (chance_miam < 12)
+            if (chance_miam < 12 && mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces)
             {
                 mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 4;
             }
-            if (chance_vie < 5)
+            if (chance_vie < 5 && mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces)
             {
                 mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 6;
             }
-            if (chance_monstre < 5)
+            if (chance_monstre < 5 && mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces)
             {
                 mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 5;
             }
@@ -699,18 +753,21 @@ void render_area::mousePressEvent(QMouseEvent *event)
 
         std::pair<int,int> coord_fin (col_ind,ligne_ind);
 
-        // On realise le parcours de dijkstra entre la position de Yugo et là on l'on clic
-        int ret = dijkstra(mon_graphe,std::get<0>(mon_graphe.Yugo->getsetpos()),std::get<1>(mon_graphe.Yugo->getsetpos()),coord_fin.first,coord_fin.second);
-
-        // on redefinit la position de Yugo si on a pas changer de map
-        if (ret != 2)
+        if (mon_graphe.getsetliste_case()[coord_fin].acces)
         {
-            mon_graphe.Yugo->deplacer(std::make_pair(col_ind,ligne_ind));
-        }
+            // On realise le parcours de dijkstra entre la position de Yugo et là on l'on clic
+            int ret = dijkstra(mon_graphe,std::get<0>(mon_graphe.Yugo->getsetpos()),std::get<1>(mon_graphe.Yugo->getsetpos()),coord_fin.first,coord_fin.second);
 
-        if (ret ==1)
-        {
-            std::cout<<"Game end"<<std::endl;
+            // on redefinit la position de Yugo si on a pas changer de map
+            if (ret != 2)
+            {
+                mon_graphe.Yugo->deplacer(std::make_pair(col_ind,ligne_ind));
+            }
+
+            if (ret ==1)
+            {
+                std::cout<<"Game end"<<std::endl;
+            }
         }
     }
     //repaint();
@@ -721,6 +778,7 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
 {
     if (!restart)
     {
+
         std::cout<<"Game start"<<std::endl;
         change_grid_state();
         ui->miam->setValue(100);
@@ -745,7 +803,6 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
 
     mon_graphe.Yugo->deplacer(debut);
     //std::cout<<"Pos gamestart:"<<mon_graphe.Yugo->pos.first<<" | "<<mon_graphe.Yugo->pos.second<<std::endl;
-
 
     repaint();
 }

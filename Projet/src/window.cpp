@@ -28,9 +28,9 @@ window::window(graphe& mon_graphe,QWidget *parent)
     QAction *guerrier = new QAction();
     QAction *aventurier = new QAction();
     QAction *sorcier = new QAction();
-    aventurier->setText("Aventurier");
-    guerrier->setText("Guerrier");
-    sorcier->setText("Sorcier");
+    aventurier->setText("Adventurer");
+    guerrier->setText("Warrior");
+    sorcier->setText("Sorcerer");
 
 
     QMenu *menu = new QMenu();

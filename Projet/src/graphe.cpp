@@ -13,10 +13,11 @@ void graphe::afficher()
     for (auto& val : liste_case)
     {
         auto coord = val.first;
-        int dim_x = std::get<0>(coord);
-        int dim_y = std::get<1>(coord);
-        std::cout << "Position (" << dim_x << "," << dim_y << ") | " << val.second << '\n';
+        int x = std::get<0>(coord);
+        int y = std::get<1>(coord);
+        std::cout << "Position (" << x << "," << y << ") | " << val.second << std::endl;
     }
+
 }
 
 int graphe::get_nb_mur()

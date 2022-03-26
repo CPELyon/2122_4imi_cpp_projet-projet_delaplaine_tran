@@ -10,7 +10,7 @@ int main(int argc,char *argv[])
     //Ses dimensions
     std::map<std::pair<int,int> , noeud> liste_case;
     int dim_x = 20;
-    int dim_y = 14;
+    int dim_y = 12;
     //Sa liste de case
     for (int i = 0; i < dim_x; i++)
     {

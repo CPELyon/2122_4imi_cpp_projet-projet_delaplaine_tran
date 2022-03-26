@@ -9,11 +9,13 @@
 
 struct perso
 {
-    int vie;
     // Points de vie de notre personnage entre 0 et 100
-    int miam;
+    int vie;
     // Nourriture de notre personnage entre 0 et 100
+    int miam;
+    // position de notre personnage sur la map
     std::pair<int,int> pos;
+
     // Score
     int score;
     // Variable de fin

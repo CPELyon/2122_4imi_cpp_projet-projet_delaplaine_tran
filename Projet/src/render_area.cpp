@@ -3,15 +3,20 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <thread>
+#include <chrono>
 
 #include <QPixmap>
 #include <QPainter>
 #include <QMouseEvent>
 
+
 #ifdef _WIN32
 #include <windows.h>
+#define SYST "win"
 #else
 #include <unistd.h>
+#define SYST "lin"
 #endif
 
 //#### Fonction libre ####//
@@ -319,8 +324,9 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                     return 2;
                 }
             }
-            // usleep(200000); //sous linux
-            Sleep(200); //sous windows
+            //if (SYST == "win")Sleep(200); //sous windows
+            //else if (SYST == "lin")usleep(200000); //sous linux
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
             repaint();
         }

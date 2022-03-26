@@ -9,8 +9,6 @@
 
 struct perso
 {
-    // Score
-    int score;
     // Variable de fin
     bool fin = false;
 
@@ -30,6 +28,8 @@ struct perso
     int& getsetmiam();
     int getsetvie() const;
     int& getsetvie();
+    int getsetscore() const;
+    int& getsetscore();
     std::pair<int,int> getsetpos() const;
     std::pair<int,int>& getsetpos();
 
@@ -40,6 +40,10 @@ protected:
     int miam;
     // position de notre personnage sur la map
     std::pair<int,int> pos;
+
+private:
+    // Score
+    int score;
 
 };
 

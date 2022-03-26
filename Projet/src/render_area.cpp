@@ -31,7 +31,7 @@ int boucle(noeud &parcours, std::list<std::pair<int,int>> &queue, std::map<std::
         }
 
         //Si on tombe sur un mur, on n'ajoute pas ses coordonnées dans queue mais on dit qu'on l'a vérifié
-        if (g.liste_case[coord_voisin].acces== false ) //mur
+        if (g.getsetliste_case()[coord_voisin].acces== false ) //mur
         {
             visite[coord_voisin]=true;
         }
@@ -39,13 +39,13 @@ int boucle(noeud &parcours, std::list<std::pair<int,int>> &queue, std::map<std::
         //Sinon on dit qu'on a vérifié le voisin et on l'ajoute à la queue pour refaire l'algo
         if (visite[coord_voisin]==false)
         {
-            g.liste_case[coord_voisin].item = 3;
+            g.getsetliste_case()[coord_voisin].getsetitem() = 3;
             visite[coord_voisin]=true;
             queue.push_back(coord_voisin);
             ret++;
             if (refill)
             {
-                g.liste_case[coord_voisin].acces = false;
+                g.getsetliste_case()[coord_voisin].acces = false;
             }
         }
     }
@@ -55,9 +55,9 @@ std::pair<std::pair<int,int>,noeud> find_min (graphe g,graphe P)
 {
     int dist = 10000;
     std::pair<std::pair<int,int>,noeud> ret;
-    for (auto val : g.liste_case)
+    for (auto val : g.getsetliste_case())
     {
-        if (P.liste_case.find(val.first) == P.liste_case.end())
+        if (P.getsetliste_case().find(val.first) == P.getsetliste_case().end())
         {
             if (std::get<1>(val).distance < dist)
             {
@@ -133,29 +133,29 @@ void render_area::paintEvent(QPaintEvent*)
                 int coin_sup_y = j*((this->height())/dim_y);
                 int coin_inf_x = coin_sup_x + (this->width())/dim_x;
                 int coin_inf_y = coin_sup_y + (this->height())/dim_y;
-                // std::cout<<mon_graphe.liste_case[std::make_pair(i,j)].acces<<std::endl;
+                // std::cout<<mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces<<std::endl;
 
-                if (mon_graphe.liste_case[std::make_pair(i,j)].acces == false)
+                if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces == false)
                 {
                     QColor color(100, 100, 100);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 4)
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 4)
                 {
                     QColor color(119, 200, 42);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 5)
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 5)
                 {
                     QColor color(255, 158, 27);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 6) //vie
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 6) //vie
                 {
                     QColor color(255, 0, 0);
                     brush.setColor(color);
                     painter.setBrush(brush);
-                }else if (mon_graphe.liste_case[std::make_pair(i,j)].item == 7) //tp
+                }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 7) //tp
                 {
                     QColor color(165, 10, 196);
                     brush.setColor(color);
@@ -219,7 +219,7 @@ int render_area::parcourslargeur(graphe & g, int x_dep,int y_dep, int x_ar, int 
         debut=queue.front();
         //std::cout<<debut.first<<debut.second<<std::endl;
         queue.pop_front();
-        noeud parcours = g.liste_case[debut];
+        noeud parcours = g.getsetliste_case()[debut];
         stop = boucle(parcours,queue,visite,g,arrivee,ret,check,refill);
         //repaint();
     }
@@ -241,33 +241,33 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
 
     // On assigne les distances a tout les noeuds de g
     // La case de debut possede une distance nulle et les autres une distance infini (1000 ici)
-    for (auto val : g.liste_case)
+    for (auto val : g.getsetliste_case())
     {
         std::pair<int,int> coord = val.first;
-        g.liste_case[coord].distance = 10000;
-        if (coord.first == coord_debut.first && coord.second == coord_debut.second){g.liste_case[coord].distance = 0;}
+        g.getsetliste_case()[coord].distance = 10000;
+        if (coord.first == coord_debut.first && coord.second == coord_debut.second){g.getsetliste_case()[coord].distance = 0;}
     }
 
     // variable pour eviter de boucler infiniment
     // signifie que le chemin n'existe pas
     int compteur = 0;
     // On applique l'algorithme de recherche
-    while(P.liste_case.size() < g.liste_case.size()-g.get_nb_mur() && compteur <= g.liste_case.size()-g.get_nb_mur())
+    while(P.getsetliste_case().size() < g.getsetliste_case().size()-g.get_nb_mur() && compteur <= g.getsetliste_case().size()-g.get_nb_mur())
     {
         compteur++;
         std::pair<std::pair<int,int>,noeud> a = find_min(g,P);
-        P.liste_case[a.first] = std::get<1>(a);
-        auto liste = g.liste_case[a.first].liste_voisin;
+        P.getsetliste_case()[a.first] = std::get<1>(a);
+        auto liste = g.getsetliste_case()[a.first].liste_voisin;
         for (auto b : liste)
         {
-            if (P.liste_case.find(b) == P.liste_case.end())
+            if (P.getsetliste_case().find(b) == P.getsetliste_case().end())
             {
-                if (g.liste_case[b].acces)
+                if (g.getsetliste_case()[b].acces)
                 {
-                    if (g.liste_case[b].distance > std::get<1>(a).distance + 1)
+                    if (g.getsetliste_case()[b].distance > std::get<1>(a).distance + 1)
                     {
-                        g.liste_case[b].distance = std::get<1>(a).distance + 1;
-                        g.liste_case[b].predecesseur = a.first;
+                        g.getsetliste_case()[b].distance = std::get<1>(a).distance + 1;
+                        g.getsetliste_case()[b].predecesseur = a.first;
                     }
                 }
             }
@@ -275,7 +275,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
     }
 
     // Si on a trouver un chemin alors on le trace
-    if (compteur <= g.liste_case.size()-g.get_nb_mur())
+    if (compteur <= g.getsetliste_case().size()-g.get_nb_mur())
     {
         // On en deduit le chemin le plus court entre debut et fin
         std::vector<std::pair<int,int>> A;
@@ -283,7 +283,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
         while (coord_s.first != coord_debut.first || coord_s.second != coord_debut.second)
         {
             A.push_back(std::make_pair(std::get<0>(coord_s),std::get<1>(coord_s)));
-            coord_s = g.liste_case[coord_s].predecesseur;
+            coord_s = g.getsetliste_case()[coord_s].predecesseur;
         }
         A.push_back(std::make_pair(std::get<0>(coord_debut),std::get<1>(coord_debut)));
 
@@ -293,11 +293,11 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
         // implementation graphique
         for (auto val : A)
         {
-            if (g.liste_case[val].item != 1 && g.liste_case[val].item != 2)
+            if (g.getsetliste_case()[val].getsetitem() != 1 && g.getsetliste_case()[val].getsetitem() != 2)
             {
-                if (g.liste_case[g.liste_case[val].predecesseur].item == 3)
+                if (g.getsetliste_case()[g.getsetliste_case()[val].predecesseur].getsetitem() == 3)
                 {
-                    g.liste_case[g.liste_case[val].predecesseur].item = 0;
+                    g.getsetliste_case()[g.getsetliste_case()[val].predecesseur].getsetitem() = 0;
                 }
 
                 // On update les stats de Yugo
@@ -305,8 +305,8 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                 int cgt_map = g.checknoeud();
                 ui->miam->setValue(g.Yugo->getsetmiam());
                 ui->vie->setValue(g.Yugo->getsetvie());
-                ui->score->display(g.Yugo->score);
-                //std::cout<<"Score :"<<g.Yugo->score<<std::endl;
+                ui->score->display(g.Yugo->getsetscore());
+                //std::cout<<"Score :"<<g.Yugo->getsetscore()<<std::endl;
 
                 // On check si on a perdu
                 check_fin();
@@ -316,7 +316,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                     return 1;
                 }
 
-                g.liste_case[val].item = 3;
+                g.getsetliste_case()[val].getsetitem() = 3;
 
                 if (cgt_map == 1)
                 {
@@ -350,7 +350,7 @@ void render_area::generate_wall()
             int chance = rand() % 100 + 1;
             if (chance < 25)
             {
-                mon_graphe.liste_case[std::make_pair(i,j)].acces = false;
+                mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces = false;
             }
         }
     }
@@ -360,16 +360,16 @@ void render_area::generate_wall()
     std::map<std::pair<int,int>,int> zone;
 
     graphe g_copie = mon_graphe;
-    while(!g_copie.liste_case.empty() && g_copie.liste_case.size() != g_copie.get_nb_mur())
+    while(!g_copie.getsetliste_case().empty() && g_copie.getsetliste_case().size() != g_copie.get_nb_mur())
     {
         //std::cout<<"modif acces"<<std::endl;
         // definir la premiere case non mur
-        auto it = g_copie.liste_case.begin();
+        auto it = g_copie.getsetliste_case().begin();
         auto coord_debut = it->first;
         bool check = false;
         while (!check)
         {
-            if (!g_copie.liste_case[coord_debut].acces)
+            if (!g_copie.getsetliste_case()[coord_debut].acces)
             {
                 it++;
                 coord_debut = it->first;
@@ -384,26 +384,26 @@ void render_area::generate_wall()
         zone[coord_debut] = nb_case_zone;
 
         // on enleve toute les cases parcouru lors de l'algo de parcours
-        auto liste_temp = g_copie.liste_case;
+        auto liste_temp = g_copie.getsetliste_case();
         for (auto val : liste_temp)
         {
             auto coord = val.first;
-            if (g_copie.liste_case[coord].item == 3)
+            if (g_copie.getsetliste_case()[coord].getsetitem() == 3)
             {
-                g_copie.liste_case.erase(coord);
+                g_copie.getsetliste_case().erase(coord);
             }
         }
-        g_copie.liste_case.erase(coord_debut);
+        g_copie.getsetliste_case().erase(coord_debut);
 
         // mise a jour des voisins dans la liste de case restante
-        for (auto val : g_copie.liste_case)
+        for (auto val : g_copie.getsetliste_case())
         {
             auto coord = val.first;
-            for (int i = 0; i < g_copie.liste_case[coord].liste_voisin.size(); i++ )
+            for (int i = 0; i < g_copie.getsetliste_case()[coord].liste_voisin.size(); i++ )
             {
-                if (g_copie.liste_case.find(g_copie.liste_case[coord].liste_voisin.at(i)) == g_copie.liste_case.end())
+                if (g_copie.getsetliste_case().find(g_copie.getsetliste_case()[coord].liste_voisin.at(i)) == g_copie.getsetliste_case().end())
                 {
-                    g_copie.liste_case[coord].liste_voisin.erase(g_copie.liste_case[coord].liste_voisin.begin()+i);
+                    g_copie.getsetliste_case()[coord].liste_voisin.erase(g_copie.getsetliste_case()[coord].liste_voisin.begin()+i);
                 }
             }
         }
@@ -428,7 +428,7 @@ void render_area::generate_wall()
         {
             // permet de passer a false tte les cases de la zones
             parcourslargeur(mon_graphe,std::get<0>(coord),std::get<1>(coord),0,0,false,true);
-            mon_graphe.liste_case[coord].acces = false; // on le ft manuellement pour le premier element
+            mon_graphe.getsetliste_case()[coord].acces = false; // on le ft manuellement pour le premier element
         }
     }
     // repaint();
@@ -448,15 +448,15 @@ void render_area::generate_item()
             int chance_monstre = rand() % 100 + 1;
             if (chance_miam < 12)
             {
-                mon_graphe.liste_case[std::make_pair(i,j)].item = 4;
+                mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 4;
             }
             if (chance_vie < 5)
             {
-                mon_graphe.liste_case[std::make_pair(i,j)].item = 6;
+                mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 6;
             }
             if (chance_monstre < 5)
             {
-                mon_graphe.liste_case[std::make_pair(i,j)].item = 5;
+                mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 5;
             }
         }
     }
@@ -474,9 +474,9 @@ void render_area::generate_tp()
     bool check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[position].acces)
+        if (mon_graphe.getsetliste_case()[position].acces)
         {
-            mon_graphe.liste_case[position].item = 7;
+            mon_graphe.getsetliste_case()[position].getsetitem() = 7;
             check = true;
         }else
         {
@@ -499,9 +499,9 @@ void render_area::generate_tp()
     check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[position].acces)
+        if (mon_graphe.getsetliste_case()[position].acces)
         {
-            mon_graphe.liste_case[position].item = 7;
+            mon_graphe.getsetliste_case()[position].getsetitem() = 7;
             check = true;
         }else
         {
@@ -524,9 +524,9 @@ void render_area::generate_tp()
     check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[position].acces)
+        if (mon_graphe.getsetliste_case()[position].acces)
         {
-            mon_graphe.liste_case[position].item = 7;
+            mon_graphe.getsetliste_case()[position].getsetitem() = 7;
             check = true;
         }else
         {
@@ -549,9 +549,9 @@ void render_area::generate_tp()
     check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[position].acces)
+        if (mon_graphe.getsetliste_case()[position].acces)
         {
-            mon_graphe.liste_case[position].item = 7;
+            mon_graphe.getsetliste_case()[position].getsetitem() = 7;
             check = true;
         }else
         {
@@ -592,9 +592,9 @@ std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool ac
     bool check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[debut].acces)
+        if (mon_graphe.getsetliste_case()[debut].acces)
         {
-            mon_graphe.liste_case[debut].item = 1;
+            mon_graphe.getsetliste_case()[debut].getsetitem() = 1;
             check = true;
         }else
         {
@@ -637,9 +637,9 @@ std::pair<int,int> render_area::define_fin(int pos_x = 0,int pos_y = 0,bool acce
     bool check = false;
     while (!check)
     {
-        if (mon_graphe.liste_case[fin].acces && mon_graphe.liste_case[fin].item != 1)
+        if (mon_graphe.getsetliste_case()[fin].acces && mon_graphe.getsetliste_case()[fin].getsetitem() != 1)
         {
-            mon_graphe.liste_case[fin].item = 2;
+            mon_graphe.getsetliste_case()[fin].getsetitem() = 2;
             check = true;
         }else
         {
@@ -662,13 +662,13 @@ void render_area::change_parcours_state()
     parcours_state=!parcours_state;
     std::pair<int,int> debut;
     std::pair<int,int> fin;
-    for (auto val : mon_graphe.liste_case)
+    for (auto val : mon_graphe.getsetliste_case())
     {
         auto coord = std::get<0>(val);
-        if (mon_graphe.liste_case[coord].item == 1)
+        if (mon_graphe.getsetliste_case()[coord].getsetitem() == 1)
         {
             debut = coord;
-        }else if (mon_graphe.liste_case[coord].item == 2)
+        }else if (mon_graphe.getsetliste_case()[coord].getsetitem() == 2)
         {
             fin = coord;
         }
@@ -734,10 +734,10 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
 
     // recuperation des coord du debut et de fin
     std::pair<int,int> debut;
-    for (auto val : mon_graphe.liste_case)
+    for (auto val : mon_graphe.getsetliste_case())
     {
         auto coord = std::get<0>(val);
-        if (mon_graphe.liste_case[coord].item == 1)
+        if (mon_graphe.getsetliste_case()[coord].getsetitem() == 1)
         {
             debut = coord;
         }

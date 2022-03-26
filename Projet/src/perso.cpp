@@ -26,6 +26,8 @@ int perso::getsetvie() const {return vie;}
 int& perso::getsetvie() {return vie;}
 std::pair<int,int> perso::getsetpos() const {return pos;}
 std::pair<int,int>& perso::getsetpos() {return pos;}
+int& perso::getsetscore(){return score;}
+int perso::getsetscore() const{return score;}
 
 void perso::mangerp()
 {

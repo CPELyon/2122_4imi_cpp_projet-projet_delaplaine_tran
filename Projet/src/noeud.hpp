@@ -24,7 +24,7 @@ struct noeud
     //  6 : vie
     //  7 : changement de map
 
-    int item;
+
     std::vector<std::pair<int,int>> liste_voisin;
     int distance;
     std::pair<int,int> predecesseur;
@@ -36,6 +36,12 @@ struct noeud
     void set_voisin(int pos_x,int pos_y,int grid_x,int grid_y);
 
     void afficher_voisin();
+
+    int getsetitem() const;
+    int& getsetitem();
+
+private:
+    int item;
 
 };
 

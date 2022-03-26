@@ -10,7 +10,7 @@ noeud::noeud(bool p_acces,int p_item)
 
 std::ostream& operator<<(std::ostream& s, noeud const & n)
 {
-    s<< "item : "<< n.item << " ; acces : " << n.acces;
+    s<< "item : "<< n.getsetitem() << " ; acces : " << n.acces;
     return s;
 }
 
@@ -103,6 +103,7 @@ void noeud::afficher_voisin()
     std::cout<<std::endl;
 }
 
-
+int noeud::getsetitem() const{return item;}
+int& noeud::getsetitem(){return item;}
 
 

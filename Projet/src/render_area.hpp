@@ -40,7 +40,7 @@ public:
     std::pair<int,int> define_debut(int pos_x,int pos_y,bool accept_pos);
     std::pair<int,int> define_fin(int pos_x,int pos_y,bool accept_pos);
 
-    void game_start(int pos_x, int pos_y,bool restart);
+    void game_start(int pos_x, int pos_y,bool restart,int type);
     void check_fin();
 
 protected:

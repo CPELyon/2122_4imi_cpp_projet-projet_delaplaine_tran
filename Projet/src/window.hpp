@@ -28,6 +28,9 @@ private slots:
 
     void action_quit();
     void action_lancer();
+    void action_guerrier();
+    void action_aventurier();
+    void action_sorcier();
 
 private:
 

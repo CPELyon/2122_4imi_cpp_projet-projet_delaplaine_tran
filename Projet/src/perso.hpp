@@ -9,13 +9,6 @@
 
 struct perso
 {
-    // Points de vie de notre personnage entre 0 et 100
-    int vie;
-    // Nourriture de notre personnage entre 0 et 100
-    int miam;
-    // position de notre personnage sur la map
-    std::pair<int,int> pos;
-
     // Score
     int score;
     // Variable de fin
@@ -23,14 +16,55 @@ struct perso
 
     perso();
     perso(std::pair<int,int> spawn);
+    ~perso();
 
+
+    virtual void mangerp();
+    virtual void mangerm();
+    virtual void viep();
+    virtual void viem();
+    std::pair<int,int>& deplacer(std::pair<int,int> arrivee);
+    std::pair<int,int> deplacer(std::pair<int,int> arrivee) const;
+
+    int getsetmiam() const;
+    int& getsetmiam();
+    int getsetvie() const;
+    int& getsetvie();
+    std::pair<int,int> getsetpos() const;
+    std::pair<int,int>& getsetpos();
+
+protected:
+    // Points de vie de notre personnage entre 0 et 100
+    int vie;
+    // Nourriture de notre personnage entre 0 et 100
+    int miam;
+    // position de notre personnage sur la map
+    std::pair<int,int> pos;
+
+};
+
+struct aventurier : public perso
+{
     void mangerp();
     void mangerm();
     void viep();
     void viem();
-    std::pair<int,int>& deplacer(std::pair<int,int> arrivee);
-    std::pair<int,int> deplacer(std::pair<int,int> arrivee) const;
+};
 
+struct guerrier : public perso
+{
+    void mangerp();
+    void mangerm();
+    void viep();
+    void viem();
+};
+
+struct sorcier : public perso
+{
+    void mangerp();
+    void mangerm();
+    void viep();
+    void viem();
 };
 
 #endif // PERSO_HPP

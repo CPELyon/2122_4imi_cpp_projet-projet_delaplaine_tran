@@ -24,6 +24,25 @@ window::window(graphe& mon_graphe,QWidget *parent)
     ui->vie->setVisible(0);
     ui->label->setVisible(0);
     ui->label_2->setVisible(0);
+
+    QAction *guerrier = new QAction();
+    QAction *aventurier = new QAction();
+    QAction *sorcier = new QAction();
+    aventurier->setText("Aventurier");
+    guerrier->setText("Guerrier");
+    sorcier->setText("Sorcier");
+
+
+    QMenu *menu = new QMenu();
+    menu->addAction(guerrier);
+    menu->addAction(aventurier);
+    menu->addAction(sorcier);
+
+    ui->character->setMenu(menu);
+
+    connect(guerrier, SIGNAL(triggered()), this, SLOT(action_guerrier()));
+    connect(aventurier, SIGNAL(triggered()), this, SLOT(action_aventurier()));
+    connect(sorcier, SIGNAL(triggered()), this, SLOT(action_sorcier()));
 }
 
 
@@ -39,5 +58,49 @@ void window::action_quit()
 
 void window::action_lancer()
 {
-    render->game_start(0,0,false);
+    render->game_start(0,0,false,2);
+    ui->label_character->setText("You are an Adventurer");
 }
+
+void window::action_guerrier()
+{
+    //std::cout<<"action guerrier"<<std::endl;
+    render->game_start(0,0,false,1);
+    ui->label_character->setText("You are a Warrior");
+
+    ui->Lancer->hide();
+    ui->character->hide();
+    ui->label->show();
+    ui->label_2->show();
+    ui->vie->show();
+    ui->miam->show();
+}
+
+void window::action_aventurier()
+{
+    //std::cout<<"action aventurier"<<std::endl;
+    render->game_start(0,0,false,2);
+    ui->label_character->setText("You are an Adventurer");
+
+    ui->Lancer->hide();
+    ui->character->hide();
+    ui->label->show();
+    ui->label_2->show();
+    ui->vie->show();
+    ui->miam->show();
+}
+
+void window::action_sorcier()
+{
+    //std::cout<<"action sorcerer"<<std::endl;
+    render->game_start(0,0,false,3);
+    ui->label_character->setText("You are a Sorcerer");
+
+    ui->Lancer->hide();
+    ui->character->hide();
+    ui->label->show();
+    ui->label_2->show();
+    ui->vie->show();
+    ui->miam->show();
+}
+

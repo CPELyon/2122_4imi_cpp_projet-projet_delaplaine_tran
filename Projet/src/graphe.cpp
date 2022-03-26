@@ -1,11 +1,11 @@
 #include "graphe.hpp"
 
 graphe::graphe()
-    :dim_x(10),dim_y(10),liste_case(),Yugo(perso())
+    :dim_x(10),dim_y(10),liste_case(),Yugo(new perso())
 {}
 
 graphe::graphe(int p_dim_x,int p_dim_y,std::map<std::pair<int,int>,noeud> p_map)
-    :dim_x(p_dim_x),dim_y(p_dim_y),liste_case(p_map),Yugo(perso())
+    :dim_x(p_dim_x),dim_y(p_dim_y),liste_case(p_map),Yugo(new perso())
 {}
 
 void graphe::afficher()
@@ -34,27 +34,27 @@ int graphe::get_nb_mur()
 
 int graphe::checknoeud()
 {
-    Yugo.score += 10;
-    Yugo.mangerm();
+    Yugo->score += 10;
+    Yugo->mangerm();
     int rep = 0;
-    if (liste_case[Yugo.pos].item==4){
-       Yugo.mangerp();
+    if (liste_case[Yugo->getsetpos()].item==4){
+       Yugo->mangerp();
        //std::cout<<"manger plus"<<std::endl;
     }
-    if (liste_case[Yugo.pos].item==5){
-       Yugo.viem();
-       Yugo.score += 50;
+    if (liste_case[Yugo->getsetpos()].item==5){
+       Yugo->viem();
+       Yugo->score += 50;
        //std::cout<<"vie moins"<<std::endl;
     }
-    if (liste_case[Yugo.pos].item==6){
-       Yugo.viep();
+    if (liste_case[Yugo->getsetpos()].item==6){
+       Yugo->viep();
        //std::cout<<"vie plus"<<std::endl;
     }
-    if (liste_case[Yugo.pos].item==7){
+    if (liste_case[Yugo->getsetpos()].item==7){
        //changement map
        reset_map();
        rep = 1;
-       Yugo.score += 20;
+       Yugo->score += 20;
     }
     return rep;
 }
@@ -71,6 +71,24 @@ void graphe::generate_wall()
                 liste_case[std::make_pair(i,j)].acces = false;
             }
         }
+    }
+}
+
+void graphe::generate_perso(int type)
+{
+    if (type == 1)
+    {
+        guerrier *gYugo = new guerrier();
+        //std::cout<<"guerrier choisis"<<std::endl;
+        Yugo = gYugo;
+    }else if (type == 2)
+    {
+        aventurier *aYugo = new aventurier();
+        Yugo = aYugo;
+    }else if (type == 3)
+    {
+        sorcier *sYugo = new sorcier();
+        Yugo = sYugo;
     }
 }
 

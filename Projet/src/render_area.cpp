@@ -110,7 +110,7 @@ void render_area::paintEvent(QPaintEvent*)
     painter.setBrush(brush);
 
     //if grid_state is true, then we draw the grid
-    if (mon_graphe.Yugo.fin)
+    if (mon_graphe.Yugo->fin)
     {
         painter.eraseRect(0,0,mon_graphe.dim_x,mon_graphe.dim_y);
         QString string = tr("Game Over");
@@ -167,7 +167,7 @@ void render_area::paintEvent(QPaintEvent*)
                 }
                 painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
 
-                if (mon_graphe.Yugo.pos.first == i && mon_graphe.Yugo.pos.second == j)
+                if (mon_graphe.Yugo->getsetpos().first == i && mon_graphe.Yugo->getsetpos().second == j)
                 {
                     QColor color(72, 122, 255);
                     brush.setColor(color);
@@ -301,16 +301,16 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                 }
 
                 // On update les stats de Yugo
-                g.Yugo.deplacer(val);
+                g.Yugo->deplacer(val);
                 int cgt_map = g.checknoeud();
-                ui->miam->setValue(g.Yugo.miam);
-                ui->vie->setValue(g.Yugo.vie);
-                ui->score->display(g.Yugo.score);
-                //std::cout<<"Score :"<<g.Yugo.score<<std::endl;
+                ui->miam->setValue(g.Yugo->getsetmiam());
+                ui->vie->setValue(g.Yugo->getsetvie());
+                ui->score->display(g.Yugo->score);
+                //std::cout<<"Score :"<<g.Yugo->score<<std::endl;
 
                 // On check si on a perdu
                 check_fin();
-                if (g.Yugo.fin)
+                if (g.Yugo->fin)
                 {
                     repaint();
                     return 1;
@@ -320,7 +320,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
 
                 if (cgt_map == 1)
                 {
-                    game_start(g.Yugo.pos.first,g.Yugo.pos.second,true);
+                    game_start(g.Yugo->getsetpos().first,g.Yugo->getsetpos().second,true,0);
                     return 2;
                 }
             }
@@ -692,7 +692,7 @@ void render_area::mousePressEvent(QMouseEvent *event)
     x_old=event->x();
     y_old=event->y();
 
-    if (!mon_graphe.Yugo.fin)
+    if (!mon_graphe.Yugo->fin)
     {
         int col_ind = x_old / (this->width()/mon_graphe.dim_x);
         int ligne_ind = y_old / (this->height()/mon_graphe.dim_y);
@@ -700,12 +700,12 @@ void render_area::mousePressEvent(QMouseEvent *event)
         std::pair<int,int> coord_fin (col_ind,ligne_ind);
 
         // On realise le parcours de dijkstra entre la position de Yugo et là on l'on clic
-        int ret = dijkstra(mon_graphe,std::get<0>(mon_graphe.Yugo.pos),std::get<1>(mon_graphe.Yugo.pos),coord_fin.first,coord_fin.second);
+        int ret = dijkstra(mon_graphe,std::get<0>(mon_graphe.Yugo->getsetpos()),std::get<1>(mon_graphe.Yugo->getsetpos()),coord_fin.first,coord_fin.second);
 
         // on redefinit la position de Yugo si on a pas changer de map
         if (ret != 2)
         {
-            mon_graphe.Yugo.deplacer(std::make_pair(col_ind,ligne_ind));
+            mon_graphe.Yugo->deplacer(std::make_pair(col_ind,ligne_ind));
         }
 
         if (ret ==1)
@@ -717,7 +717,7 @@ void render_area::mousePressEvent(QMouseEvent *event)
 }
 
 // Fonction de lancement du jeu
-void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false)
+void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,int type = 2)
 {
     if (!restart)
     {
@@ -725,6 +725,7 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false)
         change_grid_state();
         ui->miam->setValue(100);
         ui->vie->setValue(100);
+        mon_graphe.generate_perso(type);
     }
     generate_wall();
     generate_item();
@@ -742,8 +743,8 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false)
         }
     }
 
-    mon_graphe.Yugo.deplacer(debut);
-    //std::cout<<"Pos gamestart:"<<mon_graphe.Yugo.pos.first<<" | "<<mon_graphe.Yugo.pos.second<<std::endl;
+    mon_graphe.Yugo->deplacer(debut);
+    //std::cout<<"Pos gamestart:"<<mon_graphe.Yugo->pos.first<<" | "<<mon_graphe.Yugo->pos.second<<std::endl;
 
 
     repaint();
@@ -752,9 +753,9 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false)
 // Fonction pour check si on a perdu
 void render_area::check_fin()
 {
-    if (mon_graphe.Yugo.miam <= 0 || mon_graphe.Yugo.vie <= 0)
+    if (mon_graphe.Yugo->getsetmiam() <= 0 || mon_graphe.Yugo->getsetvie() <= 0)
     {
-        mon_graphe.Yugo.fin = true;
+        mon_graphe.Yugo->fin = true;
         change_grid_state();
     }
 }

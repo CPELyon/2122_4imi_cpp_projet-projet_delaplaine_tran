@@ -8,6 +8,25 @@ perso::perso(std::pair<int,int> spawn)
     :vie(100),miam(100),pos(spawn)
 {}
 
+perso::~perso(){}
+
+std::pair<int,int>& perso::deplacer(std::pair<int,int> arrivee)
+{
+  return pos = arrivee;
+}
+
+std::pair<int,int> perso::deplacer(std::pair<int,int> arrivee) const
+{
+  return pos;
+}
+
+int perso::getsetmiam() const {return miam;}
+int& perso::getsetmiam(){return miam;}
+int perso::getsetvie() const {return vie;}
+int& perso::getsetvie() {return vie;}
+std::pair<int,int> perso::getsetpos() const {return pos;}
+std::pair<int,int>& perso::getsetpos() {return pos;}
+
 void perso::mangerp()
 {
     if (miam+20 > 100)
@@ -28,7 +47,6 @@ void perso::mangerm()
     {
         miam-=1;
     }
-
 }
 
 void perso::viep()
@@ -51,15 +69,150 @@ void perso::viem()
     {
         vie-=30;
     }
-
 }
 
- std::pair<int,int>& perso::deplacer(std::pair<int,int> arrivee)
- {
-   return pos = arrivee;
- }
+void aventurier::mangerp()
+{
+    //std::cout<<"aventurier mangerp"<<std::endl;
+    if (miam+20 > 100)
+    {
+        miam=100;
+    }else
+    {
+        miam+=20;
+    }
+}
 
- std::pair<int,int> perso::deplacer(std::pair<int,int> arrivee) const
- {
-   return pos;
- }
+void aventurier::mangerm()
+{
+    //std::cout<<"aventurier mangerm"<<std::endl;
+    if (miam-2 < 0)
+    {
+        miam=0;
+    }else
+    {
+        miam-=2;
+    }
+}
+
+void aventurier::viep()
+{
+    //std::cout<<"aventurier viep"<<std::endl;
+    if (vie+10 > 100)
+    {
+        vie=100;
+    }else
+    {
+        vie+=10;
+    }
+}
+
+void aventurier::viem()
+{
+    //std::cout<<"aventurier viem"<<std::endl;
+    if (vie-30 < 0)
+    {
+        vie=0;
+    }else
+    {
+        vie-=30;
+    }
+}
+
+void guerrier::mangerp()
+{
+    //std::cout<<"guerrier mangerp"<<std::endl;
+    if (miam+20 > 100)
+    {
+        miam=100;
+    }else
+    {
+        miam+=20;
+    }
+}
+
+void guerrier::mangerm()
+{
+    //std::cout<<"guerrier mangerm"<<std::endl;
+    if (miam-4 < 0)
+    {
+        miam=0;
+    }else
+    {
+        miam-=4;
+    }
+}
+
+void guerrier::viep()
+{
+    //std::cout<<"guerrier viep"<<std::endl;
+    if (vie+10 > 100)
+    {
+        vie=100;
+    }else
+    {
+        vie+=10;
+    }
+}
+
+void guerrier::viem()
+{
+    //std::cout<<"guerrier viem"<<std::endl;
+    if (vie-20 < 0)
+    {
+        vie=0;
+    }else
+    {
+        vie-=20;
+    }
+}
+
+void sorcier::mangerp()
+{
+    //std::cout<<"sorcier mangerp"<<std::endl;
+    if (miam+20 > 100)
+    {
+        miam=100;
+    }else
+    {
+        miam+=20;
+    }
+}
+
+void sorcier::mangerm()
+{
+    //std::cout<<"sorcier mangerm"<<std::endl;
+    if (miam-4 < 0)
+    {
+        miam=0;
+    }else
+    {
+        miam-=4;
+    }
+}
+
+void sorcier::viep()
+{
+    //std::cout<<"sorcier viep"<<std::endl;
+    if (vie+20 > 100)
+    {
+        vie=100;
+    }else
+    {
+        vie+=20;
+    }
+}
+
+void sorcier::viem()
+{
+    //std::cout<<"sorcier viem"<<std::endl;
+    if (vie-30 < 0)
+    {
+        vie=0;
+    }else
+    {
+        vie-=30;
+    }
+}
+
+

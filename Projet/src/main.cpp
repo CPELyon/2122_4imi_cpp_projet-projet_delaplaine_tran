@@ -28,9 +28,9 @@ int main(int argc,char *argv[])
     //creation du graphe
     graphe mon_graphe = graphe(dim_x,dim_y,liste_case);
 
-    //Son perso
-    perso Yugo = perso();
-    mon_graphe.Yugo = Yugo;
+//    //Son perso
+//    perso *Yugo = new perso();
+//    mon_graphe.Yugo = Yugo;
 
     // mon_graphe.afficher(); //affichage graphique
 

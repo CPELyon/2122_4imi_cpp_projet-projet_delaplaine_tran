@@ -48,7 +48,7 @@ protected:
 
 private:
     // Score
-    int score;
+    int score = 0;
 
 };
 

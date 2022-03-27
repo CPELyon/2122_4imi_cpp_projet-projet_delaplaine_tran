@@ -8,6 +8,10 @@ perso::perso(std::pair<int,int> spawn)
     :vie(100),miam(100),pos(spawn)
 {}
 
+perso::perso(int type)
+    :type(type)
+{}
+
 perso::~perso(){}
 
 std::pair<int,int>& perso::deplacer(std::pair<int,int> arrivee)
@@ -28,6 +32,8 @@ std::pair<int,int> perso::getsetpos() const {return pos;}
 std::pair<int,int>& perso::getsetpos() {return pos;}
 int& perso::getsetscore(){return score;}
 int perso::getsetscore() const{return score;}
+int perso::getsettype() const{return type;}
+int& perso::getsettype(){return type;}
 
 void perso::mangerp()
 {
@@ -71,6 +77,11 @@ void perso::viem()
     {
         vie-=30;
     }
+}
+
+aventurier::aventurier(int type)
+{
+    this->getsettype() = 2;
 }
 
 void aventurier::mangerp()
@@ -121,6 +132,11 @@ void aventurier::viem()
     }
 }
 
+guerrier::guerrier(int type)
+{
+    this->getsettype() = 1;
+}
+
 void guerrier::mangerp()
 {
     //std::cout<<"guerrier mangerp"<<std::endl;
@@ -167,6 +183,11 @@ void guerrier::viem()
     {
         vie-=20;
     }
+}
+
+sorcier::sorcier(int type)
+{
+    this->getsettype() = 3;
 }
 
 void sorcier::mangerp()

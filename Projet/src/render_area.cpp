@@ -138,7 +138,7 @@ void render_area::paintEvent(QPaintEvent*)
 
                 if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 4) //food
                 {
-                    QString chemin = QString("%1/../src/food.png").arg(QCoreApplication::applicationDirPath());
+                    QString chemin = QString("%1/../src/img/food.png").arg(QCoreApplication::applicationDirPath());
                     QImageReader reader;
                     reader.setFileName(chemin);
                     QImage image_food = reader.read();
@@ -157,7 +157,7 @@ void render_area::paintEvent(QPaintEvent*)
                     }
                 }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 5 ) //monstre
                 {
-                    QString chemin = QString("%1/../src/monstre.png").arg(QCoreApplication::applicationDirPath());
+                    QString chemin = QString("%1/../src/img/monstre.png").arg(QCoreApplication::applicationDirPath());
                     QImageReader reader;
                     reader.setFileName(chemin);
                     QImage image_monstre = reader.read();
@@ -176,7 +176,7 @@ void render_area::paintEvent(QPaintEvent*)
                     }
                 }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 6) //vie
                 {
-                    QString chemin = QString("%1/../src/heart.png").arg(QCoreApplication::applicationDirPath());
+                    QString chemin = QString("%1/../src/img/heart.png").arg(QCoreApplication::applicationDirPath());
                     QImageReader reader;
                     reader.setFileName(chemin);
                     QImage image_vie = reader.read();
@@ -191,7 +191,7 @@ void render_area::paintEvent(QPaintEvent*)
                         brush.setColor(Qt::white);
                         painter.setBrush(brush);
                         painter.drawRect(coin_sup_x,coin_sup_y,coin_inf_x,coin_inf_y);
-                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*2/10, coin_sup_y+2, image_vie.scaled((coin_inf_x-coin_sup_x)*6/10,(coin_inf_y-coin_sup_y)*9/10));
+                        painter.drawImage(coin_sup_x+(coin_inf_x-coin_sup_x)*5/20, coin_sup_y+(coin_inf_y-coin_sup_y)*3/20, image_vie.scaled((coin_inf_x-coin_sup_x)*5/10,(coin_inf_y-coin_sup_y)*7/10));
                     }
                 }else if (mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces && mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() == 7) //tp
                 {
@@ -214,7 +214,9 @@ void render_area::paintEvent(QPaintEvent*)
 
                 if (mon_graphe.Yugo->getsetpos().first == i && mon_graphe.Yugo->getsetpos().second == j)
                 {
-                    QString chemin = QString("%1/../src/character.png").arg(QCoreApplication::applicationDirPath());
+                    QString chemin = QString("%1/../src/img/adventurer.png").arg(QCoreApplication::applicationDirPath());
+                    if (mon_graphe.Yugo->getsettype() == 1) chemin = QString("%1/../src/img/warrior.png").arg(QCoreApplication::applicationDirPath());
+                    else if (mon_graphe.Yugo->getsettype() == 3) chemin = QString("%1/../src/img/sorcerer.png").arg(QCoreApplication::applicationDirPath());
                     QImageReader reader;
                     reader.setFileName(chemin);
                     QImage image = reader.read();
@@ -784,6 +786,7 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
         ui->miam->setValue(100);
         ui->vie->setValue(100);
         mon_graphe.generate_perso(type);
+        std::cout<<mon_graphe.Yugo->getsettype()<<std::endl;
     }
     generate_wall();
     generate_item();

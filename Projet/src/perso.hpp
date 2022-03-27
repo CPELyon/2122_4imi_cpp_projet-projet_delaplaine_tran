@@ -14,6 +14,7 @@ struct perso
 
     perso();
     perso(std::pair<int,int> spawn);
+    perso(int type);
     ~perso();
 
 
@@ -32,6 +33,8 @@ struct perso
     int& getsetscore();
     std::pair<int,int> getsetpos() const;
     std::pair<int,int>& getsetpos();
+    int getsettype() const;
+    int& getsettype();
 
 protected:
     // Points de vie de notre personnage entre 0 et 100
@@ -40,6 +43,8 @@ protected:
     int miam;
     // position de notre personnage sur la map
     std::pair<int,int> pos;
+    // Type
+    int type;
 
 private:
     // Score
@@ -49,6 +54,8 @@ private:
 
 struct aventurier : public perso
 {
+    aventurier(int type);
+
     void mangerp();
     void mangerm();
     void viep();
@@ -57,6 +64,7 @@ struct aventurier : public perso
 
 struct guerrier : public perso
 {
+    guerrier(int type);
     void mangerp();
     void mangerm();
     void viep();
@@ -65,6 +73,7 @@ struct guerrier : public perso
 
 struct sorcier : public perso
 {
+    sorcier(int type);
     void mangerp();
     void mangerm();
     void viep();

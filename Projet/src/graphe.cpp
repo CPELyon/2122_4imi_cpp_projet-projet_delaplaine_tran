@@ -79,16 +79,15 @@ void graphe::generate_perso(int type)
 {
     if (type == 1)
     {
-        guerrier *gYugo = new guerrier();
-        //std::cout<<"guerrier choisis"<<std::endl;
+        guerrier *gYugo = new guerrier(1);
         Yugo = gYugo;
     }else if (type == 2)
     {
-        aventurier *aYugo = new aventurier();
+        aventurier *aYugo = new aventurier(2);
         Yugo = aYugo;
     }else if (type == 3)
     {
-        sorcier *sYugo = new sorcier();
+        sorcier *sYugo = new sorcier(3);
         Yugo = sYugo;
     }
 }

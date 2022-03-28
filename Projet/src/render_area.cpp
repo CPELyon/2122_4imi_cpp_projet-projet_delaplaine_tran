@@ -357,12 +357,11 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                 }
 
                 // On update les stats de Yugo
-                g.Yugo->deplacer(val);
+                g.Yugo->deplacer() = val;
                 int cgt_map = g.checknoeud();
                 ui->miam->setValue(g.Yugo->getsetmiam());
                 ui->vie->setValue(g.Yugo->getsetvie());
                 ui->score->display(g.Yugo->getsetscore());
-                //std::cout<<"Score :"<<g.Yugo->getsetscore()<<std::endl;
 
                 // On check si on a perdu
                 check_fin();
@@ -380,8 +379,7 @@ int render_area::dijkstra(graphe & g, int x_dep,int y_dep, int x_ar, int y_ar)
                     return 2;
                 }
             }
-            //if (SYST == "win")Sleep(200); //sous windows
-            //else if (SYST == "lin")usleep(200000); //sous linux
+            // pause de 200 ms pour creer une animation
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
             repaint();
@@ -629,43 +627,60 @@ std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool ac
     mon_graphe.reset_debut();
 
     // init des coords du debut et de la fin dans la map
-    int debut_x;
-    int debut_y;
+    //std::pair<int,int> debut (0,0);
+
     if (!accept_pos)
     {
-        debut_x = rand() % (mon_graphe.dim_x-1);
-        debut_y = rand() % (mon_graphe.dim_y-1);
+        std::pair<int,int> debut (rand() % (mon_graphe.dim_x-1),rand() % (mon_graphe.dim_y-1));
 
-    }else
-    {
-        debut_x = pos_x;
-        debut_y = pos_y;
-    }
-
-    std::pair<int,int> debut (debut_x,debut_y);
-
-    // config de la case de debut dans la map
-    bool check = false;
-    while (!check)
-    {
-        if (mon_graphe.getsetliste_case()[debut].acces)
+        // config de la case de debut dans la map
+        bool check = false;
+        while (!check)
         {
-            mon_graphe.getsetliste_case()[debut].getsetitem() = 1;
-            check = true;
-        }else
-        {
-            if (std::get<0>(debut) < mon_graphe.dim_x-1){std::get<0>(debut) += 1;}
-            else if (std::get<1>(debut) < mon_graphe.dim_y-1){std::get<1>(debut) += 1;}
-            else
+            if (mon_graphe.getsetliste_case()[debut].acces)
             {
-                std::get<0>(debut) = 0;
-                std::get<1>(debut) = 0;
+                mon_graphe.getsetliste_case()[debut].getsetitem() = 1;
+                check = true;
+            }else
+            {
+                if (std::get<0>(debut) < mon_graphe.dim_x-1){std::get<0>(debut) += 1;}
+                else if (std::get<1>(debut) < mon_graphe.dim_y-1){std::get<1>(debut) += 1;}
+                else
+                {
+                    std::get<0>(debut) = 0;
+                    std::get<1>(debut) = 0;
+                }
             }
         }
+        return debut;
+    }else
+    {
+        std::pair<int,int> debut (pos_x,pos_y);
+
+        // config de la case de debut dans la map
+        bool check = false;
+        while (!check)
+        {
+            if (mon_graphe.getsetliste_case()[debut].acces)
+            {
+                mon_graphe.getsetliste_case()[debut].getsetitem() = 1;
+                check = true;
+            }else
+            {
+                if (std::get<0>(debut) < mon_graphe.dim_x-1){std::get<0>(debut) += 1;}
+                else if (std::get<1>(debut) < mon_graphe.dim_y-1){std::get<1>(debut) += 1;}
+                else
+                {
+                    std::get<0>(debut) = 0;
+                    std::get<1>(debut) = 0;
+                }
+            }
+        }
+        return debut;
     }
 
     //repaint();
-    return debut;
+
 }
 
 // Fonction pour definir aléatoirement ou non dans la map les coordonées de fin
@@ -763,7 +778,7 @@ void render_area::mousePressEvent(QMouseEvent *event)
             // on redefinit la position de Yugo si on a pas changer de map
             if (ret != 2)
             {
-                mon_graphe.Yugo->deplacer(std::make_pair(col_ind,ligne_ind));
+                mon_graphe.Yugo->deplacer() = std::make_pair(col_ind,ligne_ind);
             }
 
             if (ret ==1)
@@ -786,7 +801,6 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
         ui->miam->setValue(100);
         ui->vie->setValue(100);
         mon_graphe.generate_perso(type);
-        std::cout<<mon_graphe.Yugo->getsettype()<<std::endl;
     }
     generate_wall();
     generate_item();
@@ -804,8 +818,7 @@ void render_area::game_start(int pos_x = 0, int pos_y = 0,bool restart = false,i
         }
     }
 
-    mon_graphe.Yugo->deplacer(debut);
-    //std::cout<<"Pos gamestart:"<<mon_graphe.Yugo->pos.first<<" | "<<mon_graphe.Yugo->pos.second<<std::endl;
+    mon_graphe.Yugo->deplacer() = debut;
 
     repaint();
 }

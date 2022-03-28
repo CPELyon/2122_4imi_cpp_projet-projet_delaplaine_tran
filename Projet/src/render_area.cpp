@@ -627,7 +627,6 @@ std::pair<int,int> render_area::define_debut(int pos_x = 0,int pos_y = 0,bool ac
     mon_graphe.reset_debut();
 
     // init des coords du debut et de la fin dans la map
-    //std::pair<int,int> debut (0,0);
 
     if (!accept_pos)
     {

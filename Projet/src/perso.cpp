@@ -14,12 +14,12 @@ perso::perso(int type)
 
 perso::~perso(){}
 
-std::pair<int,int>& perso::deplacer(std::pair<int,int> arrivee)
+std::pair<int,int>& perso::deplacer()
 {
-  return pos = arrivee;
+  return pos;
 }
 
-std::pair<int,int> perso::deplacer(std::pair<int,int> arrivee) const
+std::pair<int,int> perso::deplacer() const
 {
   return pos;
 }

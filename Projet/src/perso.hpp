@@ -22,8 +22,8 @@ struct perso
     virtual void mangerm();
     virtual void viep();
     virtual void viem();
-    std::pair<int,int>& deplacer(std::pair<int,int> arrivee);
-    std::pair<int,int> deplacer(std::pair<int,int> arrivee) const;
+    std::pair<int,int>& deplacer();
+    std::pair<int,int> deplacer() const;
 
     int getsetmiam() const;
     int& getsetmiam();

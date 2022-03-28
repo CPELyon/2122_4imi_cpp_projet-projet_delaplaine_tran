@@ -1,4 +1,6 @@
-Détail pour la compilation : pour que les images soient trouvées par le programme il faut que le dossier de debug créé par Qt soit dans le dossier Projet.
+Détail pour la compilation : 
+
+Pour éxécuter le code, glisser le fichier Cmakelist présent dans le dossier Projet sur Qt. Pour que les images soient trouvées par le programme il faut que le dossier de debug créé par Qt soit dans le dossier Projet. Cela se modifie lors de la configuration du projet dans Qt.
 Si les images ne sont pas trouvées, il s'affichera sur la grille des cases de couleurs rouge, verte, et orange représentant respectivement la vie, la nourriture et les
 monstres.
 

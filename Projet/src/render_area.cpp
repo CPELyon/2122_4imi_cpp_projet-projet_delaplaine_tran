@@ -502,7 +502,7 @@ void render_area::generate_item()
             int chance_miam = rand() % 100 + 1;
             int chance_vie = rand() % 100 + 1;
             int chance_monstre = rand() % 100 + 1;
-            if (chance_miam < 12 && mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces)
+            if (chance_miam < 13 && mon_graphe.getsetliste_case()[std::make_pair(i,j)].acces)
             {
                 mon_graphe.getsetliste_case()[std::make_pair(i,j)].getsetitem() = 4;
             }

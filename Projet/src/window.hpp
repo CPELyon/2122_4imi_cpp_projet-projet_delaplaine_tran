@@ -27,10 +27,10 @@ public:
 private slots:
 
     void action_quit();
-    void action_draw();
-    void action_parcours();
-    void action_wall();
-    void action_init();
+    void action_lancer();
+    void action_guerrier();
+    void action_aventurier();
+    void action_sorcier();
 
 private:
 

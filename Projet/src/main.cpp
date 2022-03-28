@@ -6,9 +6,12 @@
 int main(int argc,char *argv[])
 {
     //#### Creation de notre graphe ####//
+
+    //Ses dimensions
     std::map<std::pair<int,int> , noeud> liste_case;
     int dim_x = 20;
-    int dim_y = 14;
+    int dim_y = 12;
+    //Sa liste de case
     for (int i = 0; i < dim_x; i++)
     {
         for (int j = 0; j < dim_y; j++)
@@ -22,9 +25,14 @@ int main(int argc,char *argv[])
         }
     }
 
+    //creation du graphe
     graphe mon_graphe = graphe(dim_x,dim_y,liste_case);
 
-    // mon_graphe.afficher();
+//    //Son perso
+//    perso *Yugo = new perso();
+//    mon_graphe.Yugo = Yugo;
+
+    // mon_graphe.afficher(); //affichage graphique
 
     //#### Gestion graphique ####//
     QApplication app(argc,argv);
